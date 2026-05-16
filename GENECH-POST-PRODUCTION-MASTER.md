@@ -1,733 +1,756 @@
 # GENECH ENTENTE SPORTIVE — DOSSIER DE POST-PRODUCTION MASTER
-## Teaser Premium + Logo Reveal Cinématographique
+## Reverse Engineering Film Angers SCO + Application Genech
 
 ---
 
-## FICHE TECHNIQUE DE LA VIDÉO SOURCE
+## FICHE TECHNIQUE DES DEUX VIDÉOS
 
+### Film de référence — Angers SCO
 | Paramètre | Valeur |
 |-----------|--------|
-| Format | MP4 (H.264/AAC) |
-| Résolution | 1080 × 1920 px (9:16 vertical) |
-| Durée totale | 73,35 secondes |
-| Poids | 22,76 MB |
-| Pistes | Vidéo + Audio + Métadonnées |
-| Filigrane | clideo.com (à supprimer) |
-| Destination | Réseaux sociaux (Instagram Reels, TikTok, YouTube Shorts) |
+| Résolution | 640 × 360 px (SD — version compressée) |
+| Durée | **61,72 secondes** |
+| Frame rate | **24 fps** (cinéma) |
+| Codec | H.264 / AVC1 + AAC |
+| Total frames | 1 481 |
+| Total scènes | **34 scenes** identifiées |
+| Total I-frames | 92 keyframes |
+
+### Vidéo Genech (à monter)
+| Paramètre | Valeur |
+|-----------|--------|
+| Résolution | **1080 × 1920 px** (9:16 vertical — Instagram/TikTok/Reels) |
+| Durée source | **73,35 secondes** |
+| Codec | H.264 / MP4 |
+| Audio | AAC stéréo |
+| Filigrane | clideo.com → **méthode de suppression ci-dessous** |
 
 ---
 
-## PARTIE 1 — REVERSE ENGINEERING : ANATOMIE D'UN TEASER FOOTBALL PREMIUM
+## PARTIE 1 — REVERSE ENGINEERING COMPLET : FILM ANGERS SCO
 
-### 1.1 — Structure narrative type (référence Nike / PSG / LOSC / Champions League)
+### 1.1 — Structure en 6 phases (données réelles extraites)
 
-Un teaser football haut de gamme suit invariablement cette architecture émotionnelle en **5 actes** :
+L'analyse des 92 keyframes et 34 scènes révèle une architecture précise :
 
 ```
-ACTE 1 — L'Éveil         [0:00 → 0:08]   Silence, tension, noir
-ACTE 2 — La Montée       [0:08 → 0:25]   Plans fragmentés, identité
-ACTE 3 — L'Explosion     [0:25 → 0:45]   Énergie maximale, football
-ACTE 4 — La Respiration  [0:45 → 0:58]   Ralenti, émotion pure
-ACTE 5 — Le Logo Reveal  [0:58 → 1:13]   Climax, icône, freeze
+PHASE 1 — INTRO        [00:00 → 00:08.83]   8.83s  |  2 scènes  |  0.23 cuts/sec
+PHASE 2 — MONTÉE       [00:08.83 → 00:19.29] 10.46s  |  7 scènes  |  0.67 cuts/sec
+PHASE 3 — EXPLOSION    [00:19.29 → 00:32.67] 13.37s  | 13 scènes  |  0.97 cuts/sec
+PHASE 4 — RÉSOLUTION   [00:32.67 → 00:42.67] 10.00s  |  7 scènes  |  0.70 cuts/sec
+PHASE 5 — LOGO REVEAL  [00:42.67 → 00:58.67] 15.99s  |  3 scènes  |  0.19 cuts/sec
+PHASE 6 — ENDING       [00:58.67 → 01:01.66]  3.00s  |  2 scènes  |  final
 ```
+
+**Ratio logo reveal : 25,9% de la vidéo** (1 seconde sur 4 est consacrée au reveal)
 
 ---
 
-### 1.2 — Découpage scène par scène avec timecodes (modèle appliqué)
+### 1.2 — Découpage plan par plan EXACT (données brutes)
 
-#### ACTE 1 — L'ÉVEIL [0:00 → 0:08]
+#### PHASE 1 — INTRO [00:00 → 00:08.83]
 
-| TC Début | TC Fin | Durée | Type de plan | Contenu | Transition |
-|----------|--------|-------|-------------|---------|------------|
-| 00:00 | 00:02 | 2s | Noir absolu | Rien — silence ou rumeur de stade lointain | Cut direct |
-| 00:02 | 00:04 | 2s | Macro extrême | Texture tissu maillot / herbe / ballon — flou profond | Dissolve 8f |
-| 00:04 | 00:06 | 2s | Insert | Fragment du logo — version floue ou en contre-jour | Flash white 3f |
-| 00:06 | 00:08 | 2s | Plan large | Stade/terrain vu du dessus — aube ou coucher soleil | Cut |
+| Scène | TC Début | TC Fin | Durée | Analyse |
+|-------|----------|--------|-------|---------|
+| 1 | 00:00.00 | 00:05.33 | **5.33s** | Plan contemplatif long — établissement du ton |
+| 2 | 00:05.33 | 00:08.83 | **3.50s** | Transition identitaire — logo/stade/ambiance |
 
-**Sound design ACTE 1 :**
-- Silence total 0:00–0:01
-- Sub-bass drone progressif à partir de 0:01 (20Hz → 60Hz)
-- Rumeur de stade lointaine filtrée (HPF 2kHz, réverb longue)
-- Whoosh atmosphérique montant à 0:07
+**Signature rythmique intro : 4,42s moyen** — Plans larges, lents, émotionnels.
+Équivalent à 0,23 coupures/seconde — quasi-statique, hypnotique.
 
 ---
 
-#### ACTE 2 — LA MONTÉE [0:08 → 0:25]
+#### PHASE 2 — MONTÉE [00:08.83 → 00:19.29]
 
-| TC Début | TC Fin | Durée | Type de plan | Contenu | Transition |
-|----------|--------|-------|-------------|---------|------------|
-| 00:08 | 00:10 | 2s | Plan moyen | Joueur dos à la caméra — maillot Genech | Cut |
-| 00:10 | 00:11 | 1s | Insert | Crampons sur herbe — macro | Hard cut |
-| 00:11 | 00:12 | 1s | Insert | Mains sur ballon | Hard cut |
-| 00:12 | 00:14 | 2s | Plan large | Course vers l'objectif — slow-motion 40% | Cut |
-| 00:14 | 00:15 | 1s | Insert | Yeux du joueur — regard caméra | Flash blanc 2f |
-| 00:15 | 00:17 | 2s | Plan moyen | Geste technique — frappe/jongle | Cut |
-| 00:17 | 00:19 | 2s | Plan d'ensemble | Équipe à l'entraînement — contre-jour | Dissolve 6f |
-| 00:19 | 00:21 | 2s | Plan serré | Écusson cousu sur maillot — zoom macro | Cut |
-| 00:21 | 00:23 | 2s | Drone | Vue aérienne du terrain — Golden hour | Cut |
-| 00:23 | 00:25 | 2s | Plan moyen | Capitaine lève le poing — ralenti | Flash blanc 4f + cut |
+| Scène | TC Début | TC Fin | Durée | Analyse |
+|-------|----------|--------|-------|---------|
+| 3 | 00:08.83 | 00:10.38 | 1.54s | Premier plan action |
+| 4 | 00:10.38 | 00:12.25 | 1.88s | Plan identité club |
+| 5 | 00:12.25 | 00:13.50 | 1.25s | Insert détail |
+| 6 | 00:13.50 | 00:15.00 | 1.50s | Plan moyen joueur |
+| 7 | 00:15.00 | 00:15.62 | **0.62s** | Plan flash — accélération |
+| 8 | 00:15.62 | 00:16.00 | **0.38s** ⚡ | **FLASH IMPACT** — coupure-choc |
+| 9 | 00:16.00 | 00:19.29 | **3.29s** 🌬️ | **RESPIRATION** — plan long après impact |
 
-**Overlays ACTE 2 :**
-- Grain film 35mm léger (opacité 15–20%)
-- Vignette douce sur les bords (radius 60%, force 0.4)
-- Légère aberration chromatique (0.5px décalage R/B)
-- Filets de lumière dorée (lens flare Anamorphique horizontal, opacité 30%)
-
-**Typographie ACTE 2 :**
-- Apparition du mot "GENECH" à 00:19 — fonte condensée bold sans-serif (Bebas Neue ou Oswald)
-- Animation : masque coulissant de gauche, durée 12 frames
-- Couleur : blanc pur, tracking +200, taille 80px
-- Disparition : fade out 8 frames
+> **Point clé à 00:15.62** : Flash de 0,38s suivi immédiatement d'un plan de 3,29s.
+> C'est la signature du style premium : choc intense → pause respiratoire.
+> **Reproduire impérativement** sur la vidéo Genech.
 
 ---
 
-#### ACTE 3 — L'EXPLOSION [0:25 → 0:45]
+#### PHASE 3 — EXPLOSION [00:19.29 → 00:32.67]
 
-| TC Début | TC Fin | Durée | Type de plan | Contenu | Transition |
-|----------|--------|-------|-------------|---------|------------|
-| 00:25 | 00:26 | 1s | Plan serré | Frappe ballon — impact | Impact flash blanc |
-| 00:26 | 00:27 | 1s | Plan ultra-serré | Visage effort — 20% vitesse | Cut |
-| 00:27 | 00:28 | 1s | Plan large | Sprints collectifs | Cut |
-| 00:28 | 00:29 | 1s | Insert | Fumée de stade / tribune | Cut |
-| 00:29 | 00:30 | 1s | Plan moyen | Geste célébration | Flash 2f + cut |
-| 00:30 | 00:32 | 2s | Multi-split | 3 plans simultanés (split screen) | Wipe vertical |
-| 00:32 | 00:33 | 1s | Plan large | Équipe complète — regard caméra | Cut |
-| 00:33 | 00:35 | 2s | Insert rapide | ×4 plans à 12 frames chacun | Succession hard cuts |
-| 00:35 | 00:37 | 2s | Plan moyen | Duel physique — impact | Cut |
-| 00:37 | 00:39 | 2s | Slow-motion | Célébration victoire | Dissolve 4f |
-| 00:39 | 00:41 | 2s | Plan large | Terrain vu de face — coucher soleil | Cut |
-| 00:41 | 00:43 | 2s | Macro | Ballon suspendu — arrêt sur image | Freeze frame + grain |
-| 00:43 | 00:45 | 2s | Plan moyen | Capitaine — regard déterminé | Cut vers noir progressif |
+| Scène | TC Début | TC Fin | Durée | Analyse |
+|-------|----------|--------|-------|---------|
+| 10 | 00:19.29 | 00:20.33 | 1.04s | Début action |
+| 11 | 00:20.33 | 00:21.12 | 0.79s | Plan serré |
+| 12 | 00:21.12 | 00:22.25 | 1.12s | Plan moyen |
+| 13 | 00:22.25 | 00:24.58 | 2.33s | Plan long — émotion |
+| 14 | 00:24.58 | 00:25.17 | **0.58s** | Flash/insert |
+| 15 | 00:25.17 | 00:26.12 | 0.96s | Plan serré |
+| 16 | 00:26.12 | 00:26.67 | **0.54s** | Flash |
+| 17 | 00:26.67 | 00:27.67 | 1.00s | Plan action |
+| 18 | 00:27.67 | 00:29.33 | 1.67s | Plan large |
+| 19 | 00:29.33 | 00:30.79 | 1.46s | Plan moyen |
+| 20 | 00:30.79 | 00:32.00 | 1.21s | Plan serré |
+| 21 | 00:32.00 | 00:32.38 | **0.38s** ⚡ | **FLASH IMPACT #2** |
+| 22 | 00:32.38 | 00:32.67 | **0.29s** ⚡ | **FLASH #3 — minimum du film** |
 
-**Effets visuels ACTE 3 :**
-- Speed ramping : 100% → 40% → 100% sur les actions physiques
-- Glitch RGB : 3 frames max, décalage ±8px, opacité 60%, aux impacts
-- Flash blanc : 1–2 frames aux coupures les plus intenses
-- Zoom punch : scale 100% → 108% en 4 frames aux impacts
-- Particules lumineuses (or #F5C518) aux moments de célébration
-- Color burn sur les noirs pour profondeur cinématographique
-
-**Sound design ACTE 3 :**
-- Beat drop synchronisé à 00:25 (premier impact)
-- Impacts basse-fréquence (808 ou kick 60Hz) aux coupures
-- Whooshes directionnels entre chaque plan (durée 4–6 frames)
-- Crowd chant montant progressivement en background
-- Stinger orchestral à 00:41 (montée vers la résolution)
+> **0,29s = 7 frames à 24fps** — Plan le plus court du film entier.
+> Le style accélère jusqu'à l'insoutenable, puis coupe brutalement vers...
 
 ---
 
-#### ACTE 4 — LA RESPIRATION [0:45 → 0:58]
+#### PHASE 4 — RÉSOLUTION [00:32.67 → 00:42.67]
 
-| TC Début | TC Fin | Durée | Type de plan | Contenu | Transition |
-|----------|--------|-------|-------------|---------|------------|
-| 00:45 | 00:49 | 4s | Plan large slow | Joueurs dos à caméra — silence | Dissolve doux |
-| 00:49 | 00:52 | 3s | Insert macro | Herbe humide — détail réaliste | Cut lent |
-| 00:52 | 00:55 | 3s | Plan moyen slow | Supporter dans les tribunes | Dissolve 12f |
-| 00:55 | 00:58 | 3s | Plan large | Terrain vide — coucher soleil | Fondu vers noir |
+| Scène | TC Début | TC Fin | Durée | Analyse |
+|-------|----------|--------|-------|---------|
+| 23 | 00:32.67 | 00:35.88 | **3.21s** 🌬️ | **GRANDE RESPIRATION** — plan large calme |
+| 24 | 00:35.88 | 00:37.33 | 1.46s | Plan contemplatif |
+| 25 | 00:37.33 | 00:38.58 | 1.25s | Plan identité |
+| 26 | 00:38.58 | 00:39.67 | 1.08s | Plan ralenti |
+| 27 | 00:39.67 | 00:40.79 | 1.12s | Plan émotionnel |
+| 28 | 00:40.79 | 00:41.50 | 0.71s | Plan flash doux |
+| 29 | 00:41.50 | 00:42.67 | 1.17s | Plan de transition → reveal |
 
-**Rôle de cet acte :**
-- Créer un vide émotionnel avant la résolution
-- Laisser "respirer" le spectateur
-- Renforcer la montée de tension du reveal
-- Tempo : demi-tempo musical, atmosphérique
-
----
-
-#### ACTE 5 — LE LOGO REVEAL [0:58 → 1:13]
-
-> Voir PARTIE 2 — Détail complet du Logo Reveal Cinématographique
+> **Signature clé** : Après les 0,29s à 00:32.38, plan de 3,21s immédiat.
+> Même motif qu'en phase 2 : flash court → longue respiration = **double respiration** dans le film.
 
 ---
 
-### 1.3 — Colorimétrie et étalonnage
+#### PHASE 5 — LOGO REVEAL [00:42.67 → 00:58.67]
 
-#### Palette chromatique appliquée
+**LE MOMENT LE PLUS IMPORTANT DU FILM**
 
-| Zone | Teinte | Valeur hex | Application |
-|------|--------|-----------|-------------|
-| Noirs | Bleu nuit profond | #050C1E | Ombres — pas de noir pur |
-| Midtones | Désaturation contrôlée | — | Éviter la saturation criarde |
-| Highlights | Or lumineux | #F5C518 | Reflets, flares, textes |
-| Accent | Bleu royal | #1E3FAE | Séquences d'action |
-| Skin tones | Légèrement chauds | +5° hue rotation | Joueurs |
+| Scène | TC Début | TC Fin | Durée | Frames | Rôle |
+|-------|----------|--------|-------|--------|------|
+| 30 | 00:42.67 | 00:48.00 | **5.33s** | 128f | ACTE A — Préparation / Apparition |
+| 31 | 00:48.00 | 00:53.33 | **5.33s** | 128f | ACTE B — Révélation / Construction |
+| 32 | 00:53.33 | 00:58.67 | **5.33s** | 128f | ACTE C — Affirmation / Logo complet |
 
-#### Courbes LUT recommandées
-
-```
-LUT de base : Rec.709 → S-Log2 simulation
-Teinte générale : -5° rotation (légèrement plus bleu/froid)
-Contraste : S-curve légère (+15 highlights, -20 shadows)
-Saturation globale : -15 (désaturation cinématographique)
-Saturation sélective : +30 sur les jaunes/ors uniquement
-Grain : 15% opacité, taille 1.2px
-Vignette : 0.6 force, 65% radius
-```
-
-#### Recette DaVinci Resolve (nœuds)
-
-```
-Node 1 — Log conversion    : LUT Rec.709 to LogC
-Node 2 — Primary correction : Lift -0.05, Gamma +0.02, Gain -0.08
-Node 3 — Hue rotation      : Shift vers teal/orange
-Node 4 — Selective color   : Boost gold/yellow (+25 sat)
-Node 5 — Grain overlay     : FilmGrain 35mm 15% opacité
-Node 6 — Vignette          : Node masque circulaire, mode multiply
-```
+**Les 3 shots logo font EXACTEMENT 128 frames chacun à 24fps = 5,3333... secondes.**
+Ce n'est pas un hasard — c'est une décision artistique symétrique et délibérée.
 
 ---
 
-### 1.4 — Transitions utilisées
+#### PHASE 6 — ENDING [00:58.67 → 01:01.66]
 
-| Type | Usage | Durée | Technique |
-|------|-------|-------|-----------|
-| Hard cut | Acte 3, impacts | 0 frames | Coupe sèche |
-| Flash blanc | Changement de rythme | 1–3 frames | Opacity keyframe |
-| Dissolve doux | Actes 1, 4 | 8–15 frames | Cross dissolve |
-| Zoom punch | Impacts | 4 frames | Scale 100→108% |
-| Glitch cut | Moments dramatiques | 3 frames | RGB split + shake |
-| Wipe masque | Split screen | 6 frames | Linear wipe |
-| Fondu au noir | Transition d'actes | 10–20 frames | Opacity to black |
-| Morph cut | Continuité discours | 15 frames | Interpolation face |
+| Scène | TC Début | TC Fin | Durée | Analyse |
+|-------|----------|--------|-------|---------|
+| 33 | 00:58.67 | 00:59.54 | 0.88s | Plan de sortie |
+| 34 | 00:59.54 | 01:01.66 | 2.12s | Fondu final / freeze |
 
 ---
 
-### 1.5 — Animations typographiques
+### 1.3 — Signature rythmique mesurée (données exactes)
 
-#### Style général
-- Police : **Bebas Neue** (titres) ou **Montserrat ExtraBold** (corps)
-- Tracking : +150 à +300 (condensé, aéré, premium)
-- Couleurs : blanc pur (#FFFFFF) ou or (#F5C518)
-- Aucune ombre portée — uniquement glow subtil ou bordure 1px
+| Phase | Durée | Scènes | Moy. plan | Cuts/sec | Intensité |
+|-------|-------|--------|-----------|----------|-----------|
+| Intro | 8.83s | 2 | 4.42s | 0.23 | ● |
+| Montée | 10.46s | 7 | 1.49s | 0.67 | ●●● |
+| Explosion | 13.37s | 13 | 1.03s | 0.97 | ●●●●● |
+| Résolution | 10.00s | 7 | 1.43s | 0.70 | ●●● |
+| Logo Reveal | 15.99s | 3 | 5.33s | 0.19 | ●● (intentionnel) |
+| Ending | 3.00s | 2 | 1.50s | 0.33 | ● |
 
-#### Animations type
+**Courbe d'intensité réelle : ↗↗↗↗↑↑ PEAK ↘↘↘ PAUSE SACRÉE ●**
 
-**Reveal coulissant (standard) :**
-```
-Frame 0  : Position X -120px, Opacity 0%
-Frame 8  : Position X 0px, Opacity 100%
-Frame 80 : Position X 0px, Opacity 100%
-Frame 88 : Position X 0px, Opacity 0% (fade out)
-```
+---
 
-**Masque de révélation (premium) :**
-```
-- Texte figé derrière un rectangle masque
-- Le masque s'ouvre de gauche à droite sur 12 frames
-- Ease in/out sur le mouvement du masque
-```
+### 1.4 — Points d'impact identifiés
 
-**Tracking expansion :**
+Deux moments-clés structurants dans le film :
+
 ```
-Frame 0  : Tracking 0, Opacity 0%
-Frame 6  : Tracking +150, Opacity 100%
-Frame 70 : Tracking +200, Opacity 80%
-Frame 80 : Tracking +500, Opacity 0% (dispersion)
+IMPACT #1 — 00:15.62
+  Flash 0.38s → Plan 3.29s (ratio 1:8.7)
+  Premier choc + première grande respiration
+
+IMPACT #2 — 00:32.38–00:32.67  
+  Deux flashs consécutifs : 0.38s + 0.29s
+  Plan 3.21s immédiat après
+  Le CLIMAX d'action → bascule vers la résolution
+  
+TRANSITION VERS LE REVEAL — 00:42.67
+  Cut net vers le noir/silence
+  Début des 3 × 5.33s du logo
 ```
 
 ---
 
-### 1.6 — Sound design complet
+### 1.5 — Cadence musicale déduite
 
-#### Architecture sonore
-
-```
-LAYER 1 — Atmosphère (toujours présente)
-  └── Sub-drone 30–60Hz, volume -24dB, reverb longue
-  └── Ambiance stade filtrée, volume -30dB
-
-LAYER 2 — Musique principale
-  └── Track orchestrale/électronique
-  └── Tempo aligné sur les coupures (sync BPM)
-  └── Volume -6dB (laisse de la place pour les SFX)
-
-LAYER 3 — SFX impacts
-  └── Kick 808 aux coupures → volume -3dB
-  └── Whooshes directionnels → volume -6dB
-  └── Impacts métalliques aux flashes → volume -9dB
-
-LAYER 4 — Ambiance terrain
-  └── Bruit d'herbe, contacts ballon
-  └── Cris de joueurs éloignés
-  └── Volume -18dB, réverb stadium
-
-LAYER 5 — Logo reveal (spécifique acte 5)
-  └── Voir partie 2
-```
-
-#### Points de synchronisation obligatoires
-
-| Timecode | Événement musical | Action visuelle |
-|----------|------------------|-----------------|
-| 00:00 | Silence | Noir absolu |
-| 00:07 | Premier impact grave | Flash + premier plan |
-| 00:25 | Beat drop | Explosion d'action |
-| 00:41 | Stinger montant | Ralentissement |
-| 00:58 | "Respiration" musicale | Premier fragment logo |
-| 01:05 | Climax orchestral | Logo complet |
-| 01:10 | Note tenue | Freeze logo |
-| 01:13 | Fade out | Noir final |
+À 24fps, les I-frames révèlent le BPM probable :
+- Cluster dense frames 213–243 (acte 3) : ~8 cuts en 1,25s = ~384 BPM en rafale
+- Rythme action principal : 1 cut/sec = tempo posé ~60–80 BPM underlay
+- **BPM probable de la musique : 120–130 BPM** (tempo club standard, double-temps apparent)
+- Logo reveal : 5.33s par shot = 3 × 5.33s = exactement **2 mesures de 4/4 à 90 BPM** chacune
 
 ---
 
-## PARTIE 2 — LOGO REVEAL CINÉMATOGRAPHIQUE PREMIUM
+## PARTIE 2 — APPLICATION À GENECH : PLAN DE MONTAGE ADAPTÉ
 
-### 2.1 — Analyse du logo Genech Entente Sportive
+### 2.1 — Adaptation de la structure Angers SCO → Genech
 
-**Identité visuelle :**
-- **Forme :** Badge circulaire — force, unité, complétude
-- **Blason central :** Croix divisant 4 quartiers (tradition héraldique)
-- **Couleurs :** Marine profond #0D1B4B / Royal blue #1E3FAE / Or #F5C518 / Blanc
-- **Éléments :** 4 étoiles or, lettre "G" centrale, silhouettes blanches, "19  71"
-- **Textes :** GENECH (haut) / ENTENTE SPORTIVE (bas)
-- **Fondation :** 1971 — 54 ans d'histoire
+La vidéo Genech dure 73,35s. En appliquant les mêmes ratios :
 
-**Angles narratifs du reveal :**
-- Renaissance — nouveau chapitre après 54 ans
-- Fierté locale — club communautaire qui s'élève
-- Identité forgée — les étoiles comme victoires passées
+| Phase | Ratio Angers | Durée Genech adaptée | TC |
+|-------|-------------|---------------------|-----|
+| Intro | 14.3% | **10.5s** | 00:00 → 00:10.50 |
+| Montée | 16.9% | **12.4s** | 00:10.50 → 00:22.90 |
+| Explosion | 21.7% | **15.9s** | 00:22.90 → 00:38.80 |
+| Résolution | 16.2% | **11.9s** | 00:38.80 → 00:50.70 |
+| Logo Reveal | 25.9% | **19.0s** | 00:50.70 → 01:09.70 |
+| Ending | 4.9% | **3.6s** | 01:09.70 → 01:13.35 |
 
 ---
 
-### 2.2 — Storyboard du Logo Reveal [0:58 → 1:13]
+### 2.2 — Timeline complète Genech (plan de montage)
 
-#### SÉQUENCE A — La préparation [0:58 → 1:03] — 5 secondes
-
-```
-PLAN 1 [0:58 → 1:00] — 2 secondes
-Type    : Noir absolu + particules
-Contenu : Fond noir #050C1E
-          Particules dorées (poussière) entrent par le bas — 0.5px points, 
-          opacité 0–40% progressivement
-          Légère fumée volumétrique bleutée depuis les angles
-Sound   : Sub-drone 40Hz monte de -∞ à -18dB
-          Bruit de foule qui retient son souffle (reverse crowd)
-
-PLAN 2 [1:00 → 1:01] — 1 seconde
-Type    : Contour circulaire — fragment 1
-Contenu : Apparition du cercle extérieur du badge
-          Technique : trait blanc (#FFFFFF) opacité 0% → 60%
-          Le trait "se dessine" en rotation (angle 0° → 90°)
-          Seul le 1/4 supérieur gauche du cercle est visible
-Sound   : Whoosh métallique grave, 800ms
-          Résonance grave (reverb longue 2s)
-
-PLAN 3 [1:01 → 1:02] — 1 seconde
-Type    : Fragment de l'anneau doré
-Contenu : L'anneau or (#F5C518) du badge apparaît par fragment
-          Seul 1/3 de l'arc visible, lumineux, chaud
-          Lens flare anamorphique horizontal effleure l'arc doré
-Sound   : Harmonic rise +2 semitones
-
-PLAN 4 [1:02 → 1:03] — 1 seconde  
-Type    : Close-up sur le blason central — flou profond
-Contenu : Blur extrême (15px) — on devine la croix et les couleurs
-          Couleurs : marines et bleus royaux — impressionniste
-          La croix centrale commence à se dessiner très floue
-Sound   : Swell orchestral commence — cordes en montée
-```
-
-#### SÉQUENCE B — La révélation progressive [1:03 → 1:09] — 6 secondes
+#### PHASE 1 — INTRO GENECH [00:00 → 00:10.50]
 
 ```
-PLAN 5 [1:03 → 1:04] — 1 seconde
-Type    : Glitch révélateur — fragment logo
-Contenu : Glitch RGB (décalage ±6px sur R et B, centre intact)
-          Le logo se "matérialise" par glitch — 3 frames de perturbation
-          Puis stabilisation partielle — bas du badge visible
-Sound   : Impact métallique court + glitch audio (3 frames)
-          La montée orchestrale s'intensifie
+PLAN 1 [00:00 → 00:05.50] — 5.5s
+├── Contenu : Noir absolu → première texture (herbe, ballon, maillot marine)
+├── Vitesse : 40% (slowmo)
+├── Audio   : Sub-drone 40Hz montant de -∞ à -18dB
+├── Overlay : Grain 35mm opacité 10% (début progressif)
+└── Sortie  : Cut direct
 
-PLAN 6 [1:04 → 1:06] — 2 secondes  
-Type    : Balayage lumineux (light sweep)
-Contenu : Fond : logo entier mais opacité 30% (ghost)
-          Lumière balaye de gauche à droite (vitesse constante)
-          Là où la lumière passe → opacité monte à 100%
-          Effet "révélation par balayage" — comme une gravure qui apparaît
-          Texture métal brossé sur le blason (multiply 20%)
-Sound   : Montée orchestrale principale — violons + cuivres
-          Crescendo synchronisé au balayage
-
-PLAN 7 [1:06 → 1:07] — 1 seconde
-Type    : Impact révélateur
-Contenu : Flash blanc 2 frames — full white
-          Puis ouverture rapide : logo à 85% visible, contour lumineux
-          Particules or explosent depuis le centre (burst radial)
-          Light ring : anneau lumineux or qui s'expanse depuis le centre
-Sound   : IMPACT — kick 808 très grave + crash métallique
-          Le climax orchestral touche son point culminant ici
-
-PLAN 8 [1:07 → 1:09] — 2 secondes
-Type    : Logo complet — naissance
-Contenu : Logo 100% visible, net, opacité 100%
-          Légère pulsation : scale 100% → 102% → 100% sur 30 frames (breath)
-          Contour lumineux or subtil (glow 8px, opacité 40%)
-          Particules dorées retombent doucement
-          Fond : bleu marine profond #050C1E avec texture film
-Sound   : Note orchestrale tenue (violoncelles + cordes graves)
-          Diminution progressive du crash
-```
-
-#### SÉQUENCE C — L'affirmation [1:09 → 1:13] — 4 secondes
-
-```
-PLAN 9 [1:09 → 1:11] — 2 secondes
-Type    : Logo + Typographie
-Contenu : Logo centré, légèrement sous-centré (golden ratio)
-          Apparition du texte :
-          ┌──────────────────────────────────────┐
-          │           [LOGO CENTRÉ]              │
-          │                                      │
-          │        ENTENTE SPORTIVE              │  ← tracking expansion, or
-          │            GENECH                    │  ← Bebas Neue, blanc, 96px
-          │              1971                    │  ← gris clair, 36px
-          └──────────────────────────────────────┘
-          Animation texte : masque coulissant du bas, 12 frames
-Sound   : Décroissance orchestrale — tout s'apaise
-          Rumeur de stade qui revient doucement
-
-PLAN 10 [1:11 → 1:13] — 2 secondes (PLAN FINAL)
-Type    : Freeze iconique
-Contenu : Logo + texte — arrêt sur image parfaite
-          Légère dérive zoom : scale 100% → 102% très lentement
-          Fond vignette très douce (assombrit les bords)
-          Grain film visible (opacité 15%)
-          Couleur : noir profond, logo brillant, or lumineux
-          OPTIONNEL : devise du club ou slogan sous le logo
-Sound   : Note finale tenue — fade out progressif
-          Dernier sub-drone disparaît
-          Silence total sur la dernière frame
+PLAN 2 [00:05.50 → 00:10.50] — 5.0s
+├── Contenu : Plan large — terrain Genech, contre-jour, golden hour
+├── Vitesse : 60% (léger ralenti)
+├── Audio   : Atmosphère stade lointaine filtrée + début musique
+├── Overlay : Vignette douce + grain 15%
+├── Typo    : AUCUNE — laisser respirer
+└── Sortie  : Dissolve 15 frames vers PHASE 2
 ```
 
 ---
 
-### 2.3 — Effets détaillés et recettes de reproduction
+#### PHASE 2 — MONTÉE GENECH [00:10.50 → 00:22.90]
 
-#### Effet 1 — Contour progressif ("self-drawing circle")
+```
+PLAN 3 [00:10.50 → 00:12.00] — 1.5s  → Plan maillot / écusson macro
+PLAN 4 [00:12.00 → 00:13.88] — 1.88s → Plan joueur dos à caméra
+PLAN 5 [00:13.88 → 00:15.13] — 1.25s → Insert crampons / herbe
+PLAN 6 [00:15.13 → 00:16.63] — 1.5s  → Plan moyen : geste technique
 
-**After Effects :**
-```
-1. Créer un calque Shape (Ellipse = cercle parfait)
-2. Appliquer : Contents > Add > Trim Paths
-3. Keyframe "End" : 0% @ frame 0 → 100% @ frame 30
-4. Ease : easeInOut sur la valeur
-5. Stroke : 3px blanc, opacité 60–80%
-6. Ajouter : Glow (seuil 60%, rayon 15, intensité 0.8)
-```
+⚡ IMPACT #1 GENECH — 00:16.63
+PLAN 7 [00:16.63 → 00:17.25] — 0.62s → Flash/insert ultra-rapide
+PLAN 8 [00:17.25 → 00:17.63] — 0.38s → FLASH BLANC 9 frames (impact)
+      └── Scale 100→108% en 4f + Glitch RGB ±6px
+🌬️ RESPIRATION #1
+PLAN 9 [00:17.63 → 00:20.92] — 3.29s → Plan large contemplatif
+      └── Slowmo 40%, horizon/stade, musique prend le dessus
 
-**Premiere Pro + Motion Graphics :**
-```
-1. Essential Graphics > Ellipse shape
-2. Animer "Stroke End" de 0 à 100
-3. Ajouter effet Glow depuis Lumetri panel
-```
-
-#### Effet 2 — Balayage révélateur (Light Sweep Reveal)
-
-**After Effects :**
-```
-1. Calque logo PNG (fond transparent)
-2. Dupliquer en 2 calques : [A] ghost 30% opacité / [B] full 100%
-3. Sur calque [B] : ajouter masque rectangulaire
-4. Animer le masque de Position X : -600px → +600px sur 50 frames
-5. Feather du masque : 80px (bord doux)
-6. Résultat : le logo "s'allume" progressivement de gauche à droite
-7. Bonus : ajouter CC Light Sweep sur le calque [B] synchro
+PLAN 10 [00:20.92 → 00:21.96] — 1.04s → Insert regard joueur
+PLAN 11 [00:21.96 → 00:22.75] — 0.79s → Plan serré : mains/ballon
+PLAN 12 [00:22.75 → 00:22.90] — 0.15s → Flash léger de transition
 ```
 
-#### Effet 3 — Glitch RGB Split
+**Typographie PHASE 2 :**
+- "GENECH" apparaît @ 00:20.92 (pendant la respiration)
+- Font : Bebas Neue, blanc, tracking +200, 96px
+- Animation : Masque coulissant gauche → droite, 12 frames
 
-**After Effects :**
-```
-1. Effet : Channel > Shift Channels
-2. Créer 3 copies du calque logo
-3. Calque R : Extract rouge, déplacer +8px sur X
-4. Calque G : Extract vert, position centrale
-5. Calque B : Extract bleu, déplacer -8px sur X
-6. Mode de fusion : Screen sur tous
-7. Animer l'opacité : normal (0%) ← 3 frames → glitch (100%) → normal (0%)
-8. Ajouter Turbulent Displace léger (échelle 50, quantité 8)
-```
+---
 
-#### Effet 4 — Particules or (burst révélateur)
+#### PHASE 3 — EXPLOSION GENECH [00:22.90 → 00:38.80]
 
-**After Effects Particle World :**
 ```
-Système : CC Particle World
-- Birth Rate : 4.0
-- Longevity : 1.5s
-- Velocity : 0.8
-- Gravity : 0.2 (léger)
-- Particle Type : Faded Sphere
-- Birth Size : 0.05
-- Death Size : 0.01
-- Birth Color : #F5C518 (or)
-- Death Color : #F5C51800 (transparent)
-- Blending Mode : Add
-Position : centre du logo
-Trigger : frame du flash blanc
+PLAN 13 [00:22.90 → 00:24.23] — 1.33s → Action : frappe / sprint
+PLAN 14 [00:24.23 → 00:24.81] — 0.58s → Insert flash : visage effort
+PLAN 15 [00:24.81 → 00:25.77] — 0.96s → Plan serré : duel physique
+PLAN 16 [00:25.77 → 00:26.31] — 0.54s → Flash : célébration
+PLAN 17 [00:26.31 → 00:27.31] — 1.00s → Plan moyen : équipe
+PLAN 18 [00:27.31 → 00:28.98] — 1.67s → Plan large : terrain plein cadre
+PLAN 19 [00:28.98 → 00:30.44] — 1.46s → Slow : geste iconique
+PLAN 20 [00:30.44 → 00:31.65] — 1.21s → Plan émotion : supporter
+
+⚡⚡ DOUBLE IMPACT — 00:31.65 (climax du film)
+PLAN 21 [00:31.65 → 00:32.03] — 0.38s → FLASH IMPACT A
+PLAN 22 [00:32.03 → 00:32.32] — 0.29s → FLASH IMPACT B (plan LE PLUS COURT)
+      └── Glitch RGB maximal ±10px, 3 frames
+      └── Audio : double kick 808 + crash métallique
+      └── Scale 100→115% brutal
 ```
 
-#### Effet 5 — Contour lumineux du logo (Glow edge)
+> **Ce moment à 00:31.65 est le climax absolu.** 0.67 secondes totales de choc pur.
+> Immédiatement suivi de la plus grande respiration du film.
 
-**After Effects :**
-```
-1. Logo PNG sur calque isolé
-2. Dupliquer le calque
-3. Sur la copie : Effet > Stylize > Glow
-   - Glow Threshold : 50%
-   - Glow Radius : 15
-   - Glow Intensity : 1.2
-   - Glow Colors : A&B Colors
-   - Color A : #F5C518 (or)
-   - Color B : #FFFFFF (blanc)
-4. Mode fusion : Add, opacité 60%
-5. Animer l'intensité : 0 → 1.2 sur 20 frames
-```
+---
 
-#### Effet 6 — Suppression filigrane clideo.com
+#### PHASE 4 — RÉSOLUTION GENECH [00:38.80 → 00:50.70]
 
-**Méthode Premiere Pro :**
 ```
-1. Identifier position du filigrane (généralement coin bas-gauche ou bas)
-2. Outil Clone/Tampon : sélectionner zone similaire propre
-3. Appliquer sur toute la durée (motion tracking si filigrane suit la caméra)
-4. Alternativement : masque rectangulaire sur la zone + calque couleur uni
-   (si fond est suffisamment homogène)
-```
+🌬️ GRANDE RESPIRATION — 00:32.32 → 00:35.53 (3.21s)
+PLAN 23 [00:32.32 → 00:35.53] — 3.21s → Plan TRÈS large, calme soudain
+      └── Ralenti 30%, lumière chaude, stade ou terrain vide
+      └── Audio : musique monte seule, SFX disparaissent
+      └── Grain boost : 15% → 25% pendant ce plan
 
-**Méthode After Effects :**
-```
-1. Tracker de mouvement sur le filigrane
-2. Calque de remplacement (couleur + clone) lié au tracker
-3. Mocha AE pour un tracking plus précis si nécessaire
-```
-
-**Méthode simple (crop + resize) :**
-```
-Si le filigrane est en bas ou en haut :
-1. Rogner légèrement le cadre (crop 2–4%)
-2. Re-scaler à 1080x1920
-3. Perte de composition minimale si le filigrane est marginal
+PLAN 24 [00:35.53 → 00:36.99] — 1.46s → Regard capitaine
+PLAN 25 [00:36.99 → 00:38.24] — 1.25s → Plan équipe — communion
+PLAN 26 [00:38.24 → 00:39.32] — 1.08s → Insert écusson cousu
+PLAN 27 [00:39.32 → 00:40.44] — 1.12s → Plan émotionnel — mains
+PLAN 28 [00:40.44 → 00:41.15] — 0.71s → Plan de transition doux
+PLAN 29 [00:41.15 → 00:42.32] — 1.17s → Dernier plan "football" → cut noir
+      └── Audio : musique commence sa montée orchestrale finale
 ```
 
 ---
 
-### 2.4 — Plan de montage final détaillé
+#### PHASE 5 — LOGO REVEAL GENECH [00:42.32 → 01:01.32]
 
-#### Timeline complète (73 secondes + 15 secondes reveal = 88 secondes)
-
-```
-PISTE VIDÉO PRINCIPALE (V1)
-├── 00:00–00:02  Noir + amorce          [fade in depuis noir]
-├── 00:02–00:08  Ouverture macro        [textures matière]
-├── 00:08–00:25  Montée identitaire     [joueurs, maillot, terrain]
-├── 00:25–00:45  Explosion football     [action, énergie, rythme]
-├── 00:45–00:58  Respiration            [slowmo, émotion, pause]
-└── 00:58–01:13  LOGO REVEAL            [voir séquences A/B/C]
-
-PISTE OVERLAYS (V2)
-├── 00:00–01:13  Grain film 35mm        [opacité 15%, mode Overlay]
-├── 00:00–01:13  Vignette               [mode Multiply, opacité 40%]
-├── 00:08–00:58  Aberration chromatique [opacité 20%, pulsations aux cuts]
-├── 00:15–00:45  Lens flares hor.       [opacité 25–35%, synchro soleil]
-└── 00:58–01:13  Particules dorées      [opacité 60%, mode Add]
-
-PISTE TEXTES (V3)
-├── 00:19–00:23  "GENECH"               [blanc, Bebas, coulissant]
-├── 00:30–00:35  Année ou stat          [or, tracking expansion]
-├── 01:09–01:13  "ENTENTE SPORTIVE"     [or, masque bas]
-└── 01:09–01:13  "GENECH / 1971"        [blanc, fade in]
-
-PISTE AUDIO
-├── 00:00–01:13  Musique principale     [-6dB, sync BPM]
-├── 00:00–01:13  Sub-drone              [-24dB, atmosphère]
-├── 00:25–01:13  SFX impacts            [-3dB, sync coupes]
-└── 00:00–01:13  Ambiance stade         [-20dB, filtrée]
-```
-
-#### Placement précis des effets
-
-| Timecode | Effet | Paramètres |
-|----------|-------|-----------|
-| 00:00 | Fade in depuis noir | 30 frames, ease |
-| 00:07 | Flash blanc 2f | Opacity 100%→0% |
-| 00:10 | Zoom punch | Scale 100→108%, 4f |
-| 00:14 | Glitch RGB | 3 frames, ±8px |
-| 00:25 | Flash blanc 3f + zoom | Scale 100→112%, 6f |
-| 00:26–00:44 | Glitch aux impacts | 1–3f chaque coupe forte |
-| 00:30 | Split screen 3 volets | Wipe vertical 6f |
-| 00:43 | Freeze + grain boost | Opacity grain 15→30% |
-| 00:45 | Fade vers slowmo | Dissolve 15f |
-| 00:58 | Début reveal | Voir séquence A |
-| 01:06 | Impact flash logo | Flash 2f + burst particules |
-| 01:07 | Logo complet | Pulsation breath |
-| 01:09 | Typo reveal | Masque bas, 12f |
-| 01:13 | Freeze final | Grain visible, scale 100→102% |
+**Structure strictement identique à Angers SCO : 3 shots de durée égale**
+Durée totale : 19.0s → chaque shot = **6.33s** (152 frames @ 24fps)
 
 ---
 
-## PARTIE 3 — PROMPT ULTRA-PRÉCIS POUR AGENT IA / MONTEUR
-
-### Prompt principal (Claude Design / outil IA de montage)
+##### SHOT LOGO A [00:42.32 → 00:48.65] — PRÉPARATION (6.33s)
 
 ```
-BRIEF DE MONTAGE PREMIUM — GENECH ENTENTE SPORTIVE
-Format : 1080x1920 | Durée cible : 88 secondes | Style : Teaser football premium
+Frames 1–48 (2s) — Fond et atmosphère
+├── Fond : Noir profond #050C1E
+├── Particules dorées #F5C518 : entrent depuis le bas, ascension lente
+│   └── CC Particle World : Birth Rate 2.0, Longevity 3s, Gravity -0.1
+├── Fumée bleutée très subtile (opacité 8%) depuis les coins
+├── Sub-drone monte de -24dB à -12dB
+└── Respiration musicale : cordes basses, tension
 
-== IDENTITÉ VISUELLE ==
-Club : Genech Entente Sportive (fondé 1971, France)
-Couleurs officielles : Marine #0D1B4B / Royal Blue #1E3FAE / Or #F5C518 / Blanc #FFFFFF
-Logo : Badge circulaire avec blason, croix dorée, 4 étoiles, lettre "G", "GENECH" / "ENTENTE SPORTIVE"
+Frames 49–96 (2s) — Premier fragment : L'arc extérieur
+├── Cercle extérieur du badge : Trim Paths 0% → 45%
+│   └── Stroke blanc 2px, opacité 40%
+│   └── Rotation : dessin dans le sens horaire
+├── Lens flare anamorphique horizontal effleure l'arc
+│   └── Position : bord supérieur gauche → centre haut
+├── Audio : Whoosh grave 800ms + résonance
 
-== ÉTALONNAGE ==
-Appliquer sur toute la vidéo :
-- LUT cinématographique Teal & Orange désaturé (base neutre froide)
-- Lift : -0.05 (noirs profonds bleutés, hex #050C1E)
-- Saturation globale : -15 (désaturer pour rendu cinéma)
-- Saturation sélective : +30 sur jaune-or uniquement
-- Vignette circulaire : force 0.6, radius 65%, mode Multiply
-- Grain 35mm : taille 1.2px, opacité 15%, mode Overlay
-
-== SUPPRESSION FILIGRANE ==
-Identifier et supprimer le filigrane "clideo.com"
-Méthode : clone + masque sur la zone du filigrane, toute la durée de la vidéo
-
-== STRUCTURE EN 5 ACTES ==
-ACTE 1 [0:00-0:08] : Ouverture sombre, tension, sub-drone audio
-ACTE 2 [0:08-0:25] : Montée identitaire, plans fragmentés, texte "GENECH"
-ACTE 3 [0:25-0:45] : Explosion action, rythme soutenu, glitchs aux impacts
-ACTE 4 [0:45-0:58] : Ralenti émotionnel, respiration musicale
-ACTE 5 [0:58-1:13] : Logo Reveal cinématographique (voir ci-dessous)
-
-== LOGO REVEAL [0:58 → 1:13] ==
-Séquence A - Préparation [0:58-1:03] :
-- Fond noir #050C1E + particules dorées montantes (mode Add)
-- Contour circulaire du badge se dessine (Trim Paths 0%→100%, 30 frames)
-- Fragment anneau doré avec lens flare anamorphique
-- Blur 15px sur le blason en fond
-
-Séquence B - Révélation [1:03-1:09] :
-- Glitch RGB ±8px sur 3 frames (matérialisation)
-- Balayage lumineux gauche→droite (masque feather 80px, 50 frames)
-- Texture métal brossé en multiply 20%
-- Flash blanc 2 frames + burst particules or depuis le centre
-- Anneau lumineux or expansif (light ring)
-
-Séquence C - Affirmation [1:09-1:13] :
-- Logo complet centré, glow or (8px, opacité 40%)
-- Texte "ENTENTE SPORTIVE" en or #F5C518, Bebas Neue, tracking +200, masque bas
-- Texte "GENECH" en blanc, 96px, tracking +150, reveal 12 frames
-- "1971" en gris clair, 36px, fade in 8 frames
-- Freeze final léger zoom 100→102%, grain film visible
-
-== OVERLAYS (toute la vidéo) ==
-- Grain cinéma : Overlay 15%
-- Vignette Multiply 40%
-- Aberration chromatique : pulsation aux coupures fortes (±0.5px RGB)
-- Lens flares anamorphiques horizontaux : 25-35% opacité (plans en contre-jour)
-
-== TRANSITIONS ==
-- Hard cut : acte 3 (aucune transition, coupure sèche)
-- Flash blanc 1-3f : aux impacts et coupures dramatiques
-- Zoom punch : scale 100→108% en 4 frames aux impacts
-- Dissolve 8-15f : actes 1, 4 et transitions calmes
-- Glitch RGB 3f : moments de tension maximum
-
-== TYPOGRAPHIE ==
-- Police : Bebas Neue ou Montserrat ExtraBold
-- Textes prévus : "GENECH" (blanc, tracking +200, reveal par masque), 
-                  "ENTENTE SPORTIVE" (or, tracking +150)
-                  "1971" (gris #AAAAAA, plus petit)
-- Animation : masque coulissant horizontal, durée 12 frames, ease in/out
-- Glow subtil ou bordure 1px, aucune ombre portée
-
-== SOUND DESIGN ==
-- Sub-drone 30-60Hz : présent sur toute la vidéo, volume bas -24dB
-- Beat drop synchronisé à 00:25 (début acte 3)
-- Impacts 808 graves aux coupures fortes de l'acte 3
-- Whooshes directionnels entre chaque plan (4-6 frames, -6dB)
-- Montée orchestrale à 00:58 (début reveal)
-- Flash sonore grave à 01:06 (logo complet)
-- Note tenue finale + fade out sur 01:11-01:13
-- Silence absolu sur la dernière frame
-
-== QUALITÉ FINALE ==
-- Rendu : H.264 ou H.265, bitrate 15-20 Mbps
-- Format : 1080x1920 (9:16), 25fps ou 30fps
-- Audio : AAC 320kbps stéréo
-- Aucun template générique visible
-- Aucun effet "fait IA" — rendu agence créative haut niveau
+Frames 97–152 (2.33s) — Deuxième fragment : L'anneau doré
+├── Arc doré #F5C518 : Trim Paths 0% → 70% (plus rapide)
+│   └── Légère lueur glow : rayon 8px, intensité 0.6
+├── Blur background : 12px sur zone centrale (logo fantôme)
+├── Premier aperçu du blason : très flou, impressionniste
+├── Audio : Harmonic rise +3 demi-tons
+│   └── Cordes violoncelles commencent leur montée
 ```
 
 ---
 
-## PARTIE 4 — ADAPTATION À VOS RUSHS
-
-### 4.1 — Sélection des rushs recommandée
-
-Pour reproduire ce style avec vos rushs Genech, sélectionner :
-
-**Plans indispensables :**
-1. **Plan d'identité** : Maillot / écusson en gros plan (macro)
-2. **Plan d'action** : Frappe, duel, sprint (plans dynamiques)
-3. **Plan d'émotion** : Regard joueur, célébration, communion
-4. **Plan d'appartenance** : Terrain, stade, environnement du club
-5. **Plan contemplatif** : Contre-jour, golden hour, atmosphère
-
-**Ce que vous DEVEZ éviter :**
-- Plans trop exposés (surexposés) — perdent le contraste cinéma
-- Shaky cam non intentionnel — instable, pas de lookup sûr
-- Plans avec textes incrustés en fond (complexifie le masquage)
-- Plans trop courts à la capture (moins de 5 secondes de rush)
-
-### 4.2 — Ordre de montage recommandé
+##### SHOT LOGO B [00:48.65 → 00:54.98] — RÉVÉLATION (6.33s)
 
 ```
-ÉTAPE 1 — Selectionner vos rushs (2–3 heures)
-  └── Trier par catégorie : identité / action / émotion / lieu
-  └── Ne garder que les 25–30 plans les plus impactants
+Frames 1–20 (0.83s) — Glitch révélateur
+├── RGB Split : décalage ±8px sur R et B, vert centré
+├── Turbulent Displace : échelle 40, quantité 6, 3 frames
+├── Logo ghost @ 40% opacité visible sous le glitch
+├── Audio : impact métallique court + glitch sonore 3 frames
+└── Stabilisation immédiate
 
-ÉTAPE 2 — Appliquer l'étalonnage en premier (avant le montage)
-  └── LUT de base sur tous les plans
-  └── Normaliser l'exposition de chaque plan
+Frames 21–96 (3.17s) — Balayage lumineux (light sweep reveal)
+├── Logo base : opacité 35% (ghost)
+├── Masque rectangle coulissant gauche → droite
+│   └── Feather : 100px (bord très doux)
+│   └── Vitesse : position -700px → +700px en 76 frames (ease in/out)
+│   └── Derrière le masque : logo @ 100% opacité
+├── Effet CC Light Sweep synchronisé au masque
+│   └── Direction : 90°, Width 0.3, Sweep Intensity 60%
+├── Texture métal brossé : Multiply 15% sur le logo
+├── Audio : MONTÉE ORCHESTRALE PRINCIPALE
+│   └── Violons + cuivres + basses en crescendo
+│   └── Ce moment = plus forte montée de la musique
 
-ÉTAPE 3 — Monter l'ossature (sans effets)
-  └── Respecter les timecodes et durées ci-dessus
-  └── Synchroniser sur la musique (BPM)
-
-ÉTAPE 4 — Ajouter les transitions et effets
-  └── Glitchs, flashs, zooms en dernier
-  └── Overlays sur piste séparée
-
-ÉTAPE 5 — Logo reveal (séquence à part entière)
-  └── Monter les 15 dernières secondes indépendamment
-  └── L'assembler à la fin de la vidéo principale
-
-ÉTAPE 6 — Sound design et mixage
-  └── Toujours synchroniser les sons AUX images, pas l'inverse
-
-ÉTAPE 7 — Supprimer le filigrane cledio.com
-  └── Première tâche sur la vidéo source
-
-ÉTAPE 8 — Rendu et vérification
-  └── Vérifier sur mobile (format 9:16)
-  └── Vérifier le volume audio sur casque + haut-parleur
+Frames 97–128 (1.33s) — Pré-impact
+├── Logo visible @ 80% — presque complet
+├── Anneau doré lumineux pulsation douce
+├── Particules or commencent burst radial depuis le centre G
+├── Audio : dernier souffle avant l'impact
+│   └── Basse qui monte seule, tension maximale
+└── Suspense : le logo retient son souffle
 ```
 
 ---
 
-## LOGICIELS RECOMMANDÉS
+##### SHOT LOGO C [00:54.98 → 01:01.32] — AFFIRMATION (6.33s)
 
-| Tâche | Logiciel | Alternative |
-|-------|----------|-------------|
-| Montage principal | Premiere Pro | DaVinci Resolve (gratuit) |
-| Étalonnage / LUT | DaVinci Resolve | Lumetri (Premiere) |
-| Effets VFX | After Effects | Fusion (DaVinci, gratuit) |
-| Tracking / masque | Mocha Pro / AE | DaVinci Tracker |
-| Sound design | Audition | Audacity (gratuit) |
-| Rendu final | Adobe Media Encoder | Handbrake (gratuit) |
+```
+Frame 1 — IMPACT RÉVÉLATEUR (= le frame le plus important de la vidéo)
+├── Flash blanc 2 frames : Opacity 100% → 0%
+├── Logo : apparition 100% visible, net, propre
+├── Burst particules or : radial depuis G central
+│   └── CC Particle World : burst, Velocity 1.2, 40 particules, Fade
+├── Light ring : anneau lumineux or #F5C518 s'expansant
+│   └── Scale 0% → 200% en 20 frames
+│   └── Opacité 80% → 0% (disparaît en s'éloignant)
+├── Audio : IMPACT — kick 808 60Hz + crash orchestral
+│   └── Moment le plus fort de la vidéo sonore
+
+Frames 3–60 (2.42s) — Affirmation du logo
+├── Logo centré, scale légère pulsation : 100% → 102% → 100% (breath)
+│   └── 30 frames pour le cycle complet
+├── Glow doré : 8px, opacité 35%
+├── Particules retombent doucement (gravité légère)
+├── Audio : note orchestrale tenue, violoncelles graves
+
+Frames 61–120 (2.5s) — Typographie reveal
+├── Texte 1 : "ENTENTE SPORTIVE"
+│   └── Police : Bebas Neue, or #F5C518, tracking +250, 48px
+│   └── Position : sous le logo, décalé légèrement bas
+│   └── Animation : masque révélateur bas → haut, 12 frames
+│   └── Apparition @ frame 61
+├── Texte 2 : "GENECH"
+│   └── Police : Bebas Neue, blanc, tracking +150, 96px
+│   └── Position : au-dessus du logo
+│   └── Animation : tracking expansion 0 → +150 + fade in, 8 frames
+│   └── Apparition @ frame 72
+├── Texte 3 : "1971"
+│   └── Police : Montserrat Light, gris #AAAAAA, 32px, tracking +400
+│   └── Animation : fade in pur, 12 frames
+│   └── Apparition @ frame 88
+├── Audio : musique s'apaise, cordes graves restent
+
+Frames 121–152 (1.33s) — Freeze iconique
+├── Tout figé — logo + textes
+├── Drift zoom très lent : scale 100% → 102% sur 32 frames
+├── Grain film boost : 15% → 20%
+├── Vignette renforcée : force 0.4 → 0.6
+├── Audio : note finale tenue + fade out 2s
+└── Dernière frame : silence absolu
+```
 
 ---
 
-*Document produit pour Genech Entente Sportive — Usage interne production*
-*Niveau : Agence créative premium | Format : 1080x1920 vertical*
+#### PHASE 6 — ENDING GENECH [01:01.32 → 01:13.35]
+
+```
+PLAN 33 [01:01.32 → 01:02.20] — 0.88s → Plan de sortie optionnel
+PLAN 34 [01:02.20 → 01:13.35] — 11.15s → Fondu final au noir
+      └── Fade to black : 3 secondes
+      └── Logo reste en surimpression sur le noir final (opacité 30%)
+      └── Silence ou ambiance stade lointaine de plus en plus douce
+```
+
+---
+
+## PARTIE 3 — EFFETS ET TECHNIQUES : RECETTES COMPLÈTES
+
+### 3.1 — Suppression filigrane clideo.com
+
+**Technique 1 — Content-Aware Fill (After Effects)**
+```
+1. Identifier la position du filigrane (probablement bas-gauche ou bas-centre)
+2. Dans AE : Calque > Nouveau > Calque de solide (couleur proche du fond)
+3. Outils Roto Brush ou Masque sur la zone exacte du filigrane
+4. Appliquer Content-Aware Fill (Frame Sampling = 30fps)
+5. AE génère un calque de remplacement automatique
+```
+
+**Technique 2 — Clone + Motion Tracking**
+```
+1. Dupliquer un calque de la vidéo
+2. Positionner le duplicata pour couvrir le filigrane
+3. Motion Tracker (AE) : tracker la zone stable proche du filigrane
+4. Lier le calque couvrant au tracker
+5. Ajuster l'opacité et les masques frame par frame si nécessaire
+```
+
+**Technique 3 — Crop (si filigrane marginal)**
+```
+Si filigrane < 5% de la hauteur et en bordure :
+1. Rogner la vidéo : Top/Bottom crop de 4-5%
+2. Re-scaler à 1080×1920
+3. Perte de composition mineure, rapide et propre
+```
+
+---
+
+### 3.2 — Étalonnage cinématographique (inspiré du style Angers SCO)
+
+#### Palette Genech
+```
+Noirs cible    : #050C1E  (bleu nuit — JAMAIS noir pur)
+Midtones       : Légèrement désaturés (-15 global)
+Highlights or  : #F5C518  (boost +30 saturation sélective sur jaune)
+Accent bleu    : #1E3FAE  (renforcer lors des plans maillot/terrain)
+Skin tones     : +5° hue rotation (légèrement chaud)
+```
+
+#### Nœuds DaVinci Resolve
+```
+Node 1 — Log Input    : Input Transform → Custom (Rec.709 to LogC sim.)
+Node 2 — Primary Corr : Lift -0.05 | Gamma +0.02 | Gain -0.08
+Node 3 — Hue Shift    : Curves Hue vs Hue : légère rotation vers teal
+Node 4 — Selective Sat: Qualifier : sélection jaune → Saturation +30
+Node 5 — Film Grain   : Grain Module : Size 1.2, Mix 15%, Luma 80%
+Node 6 — Vignette     : Power Window circulaire → Opacity 40% Multiply
+Node 7 — Output       : Output Transform → Rec.709
+```
+
+#### LUT Premiere Pro (Lumetri)
+```
+Creative Look : "SL Clean Contrast" ou "Fuji F125 Kodak 2393"
+Fading Film   : +8
+Sharpen       : +15
+Saturation    : -15 (sur le Look, compense la désaturation)
+Lumetri Manual:
+  - Shadows : -40, Highlights : -20, Whites : -10, Blacks : -30
+  - Clarity : +8, Dehaze : 0
+  - HSL : Jaune Sat +35, Bleu Sat +10
+```
+
+---
+
+### 3.3 — Tableau récapitulatif des transitions
+
+| Type | Frames | Usage | TC Genech |
+|------|--------|-------|-----------|
+| Hard cut | 0f | Phase 3 — action pure | 00:22.90 → 00:38.80 |
+| Flash blanc | 2–9f | Impacts #1 et #2 | 00:17.25 / 00:31.65 |
+| Zoom punch | 4f | Impacts forts | 00:17.25 / 00:31.65 |
+| Glitch RGB | 3f | Climax + début reveal | 00:31.65 / 00:48.65 |
+| Dissolve | 10–15f | Phase 1, 4, transitions douces | 00:05.50 / 00:38.80 |
+| Fade to black | 20–30f | Transition → Logo Reveal | 00:42.32 |
+| Trim Paths | 30f | Cercle auto-dessiné logo | 00:43.82 |
+| Light Sweep | 76f | Révélation logo balayage | 00:49.48 |
+| Flash reveal | 2f | Logo complet apparaît | 00:54.98 |
+
+---
+
+### 3.4 — Sound Design : Architecture complète
+
+#### Logique des 5 layers
+
+```
+L1 — SUB DRONE [toute la vidéo]
+     Fréquence : 40Hz square wave
+     Volume    : -24dB constant, léger vibrato
+     Rôle      : Tension souterraine permanente
+
+L2 — MUSIQUE [00:05.50 → fin]
+     Recommandation : orchestrale électronique 120–130 BPM
+     Volume    : -6dB (headroom pour les SFX)
+     Mix       : Sidechain sur les impacts SFX (duck -6dB, 200ms)
+     References: Hans Zimmer style, TRON Legacy, Interstellar impact moments
+
+L3 — SFX IMPACTS [00:17.25 / 00:31.65 / 00:54.98]
+     Kick 808 50–60Hz   : -3dB, attack 0ms, release 300ms
+     Crash métallique   : -6dB, fréquences 200Hz–4kHz
+     Whoosh directionnel: -6dB, durée 6 frames, stéréo large
+
+L4 — AMBIANCE TERRAIN [sous-texte discret]
+     Foule lointaine filtrée (HPF 2kHz) : -20dB
+     Contact ballon, herbe             : -24dB
+     Réverb stadium longue (decay 3s)  : send 30%
+
+L5 — LOGO REVEAL AUDIO [00:42.32 → 01:01.32]
+     00:42.32 : Sub-drone seul + particule sonore grave montante
+     00:43.82 : Whoosh métallique grave (contour logo)
+     00:48.65 : Glitch audio 3 frames + résonance grave
+     00:49.48 : Montée orchestrale principale (crescendo 76 frames)
+     00:54.98 : CLIMAX — kick 808 + crash + tutti orchestral
+     00:55.10 : Note tenue violoncelles (après impact)
+     01:01.32 : Fade out musical 12 secondes
+     01:13.35 : Silence absolu
+```
+
+#### Points de synchronisation impératifs
+
+| Timecode | Événement audio | Événement visuel |
+|----------|----------------|-----------------|
+| 00:00.00 | Silence absolu | Noir |
+| 00:05.50 | Drone + début musique | Premier plan terrain |
+| 00:17.25 | Impact #1 kick | Flash blanc 9f |
+| 00:22.90 | Beat drop principal | Début action |
+| 00:31.65 | Double impact | Flash 0.38s + 0.29s |
+| 00:32.32 | Musique seule | Respiration 3.21s |
+| 00:42.32 | Musique coupe / respire | Fondu noir → reveal |
+| 00:49.48 | Crescendo orchestral | Balayage logo |
+| 00:54.98 | CLIMAX SONORE | Logo complet |
+| 01:01.32 | Décroissance | Typos + freeze |
+| 01:13.35 | Silence | Dernière frame |
+
+---
+
+## PARTIE 4 — PROMPT ULTRA-PRÉCIS POUR AGENT IA
+
+```
+=== BRIEF MONTAGE PREMIUM — GENECH ENTENTE SPORTIVE ===
+Référence : Film Angers SCO (61.72s, 24fps, 34 scenes, structure 6 phases)
+Cible     : 1080×1920 px, 73.35s, 24fps, vertical 9:16
+
+--- IDENTITÉ VISUELLE ---
+Club        : Genech Entente Sportive (Hauts-de-France, France, fondé 1971)
+Couleurs    : Marine #0D1B4B / Bleu royal #1E3FAE / Or #F5C518 / Blanc #FFFFFF
+Badge       : Circulaire, blason croix dorée, 4 étoiles, lettre "G", "GENECH" haut, "ENTENTE SPORTIVE" bas
+
+--- ÉTAPE 0 : SUPPRESSION FILIGRANE ---
+Supprimer filigrane "cledio.com" sur toute la durée de la vidéo.
+Méthode : Content-Aware Fill + masque sur zone filigrane.
+
+--- ÉTAPE 1 : ÉTALONNAGE (appliquer en premier) ---
+Base : Désaturation globale -15
+Noirs : lift -0.05, teinte bleu nuit #050C1E
+Highlights : Boost saturation sélective jaune/or +30
+S-curve : +15 highlights / -20 shadows
+Grain 35mm : taille 1.2px, opacité 15%, mode Overlay
+Vignette : force 0.6, radius 65%, mode Multiply
+Aberration chromatique : ±0.5px RGB, pulsation aux coupures fortes
+
+--- ÉTAPE 2 : STRUCTURE 6 PHASES ---
+
+PHASE 1 INTRO [00:00–00:10.50] :
+2 plans | Moy. 5s | 0.23 cuts/sec
+Plan 1 [0:00–0:05.50] : Noir → texture macro (herbe/ballon), slowmo 40%
+Plan 2 [0:05.50–0:10.50] : Plan large terrain contre-jour, slowmo 60%
+Transitions : Dissolve 15f entre plans
+
+PHASE 2 MONTÉE [00:10.50–00:22.90] :
+7 plans | Moy. 1.49s | 0.67 cuts/sec
+Plans 3–6 : Maillot/écusson/joueur/technique, cuts progressivement plus courts
+IMPACT #1 @ 00:16.63 : Flash blanc 9f + Scale 100→108% + Glitch RGB ±6px
+RESPIRATION #1 [00:17.63–00:20.92] : Plan large 3.29s, slowmo, musique
+Plans 10–12 : Insert regard/mains, accélération douce
+
+PHASE 3 EXPLOSION [00:22.90–00:38.80] :
+13 plans | Moy. 1.03s | 0.97 cuts/sec
+Coupures sèches uniquement. Aucune transition. Hard cuts.
+Flash blanc 2f + Zoom punch 4f aux plans 14, 16
+CLIMAX @ 00:31.65 : Double flash 0.38s + 0.29s + Glitch RGB ±10px maximal
+Audio : Double kick 808 + crash métallique
+
+PHASE 4 RÉSOLUTION [00:32.32–00:42.32] :
+7 plans | Moy. 1.43s | 0.70 cuts/sec
+RESPIRATION #2 [00:32.32–00:35.53] : Plan 3.21s, slow 30%, musique seule
+Plans 24–29 : Décelération, émotions, écusson, regards, terrain vide
+Sortie : Fondu noir 20f → REVEAL
+
+PHASE 5 LOGO REVEAL [00:42.32–01:01.32] :
+STRUCTURE IDENTIQUE ANGERS SCO : 3 shots × 6.33s chacun (152 frames @ 24fps)
+
+SHOT A [00:42.32–00:48.65] = PRÉPARATION :
+- Fond #050C1E + particules dorées montantes (CC Particle World, Add blend)
+- Contour cercle : Trim Paths 0→45%, stroke blanc 2px, sens horaire
+- Anneau or : Trim Paths 0→70%, glow 8px or
+- Blur blason central : 12px, ghost 30% opacité
+- Audio : drone + whoosh grave + résonance
+
+SHOT B [00:48.65–00:54.98] = RÉVÉLATION :
+- Glitch RGB ±8px 3 frames (matérialisation)
+- Light Sweep : masque feather 100px, gauche→droite, 76 frames ease
+- CC Light Sweep synchro, Direction 90°, Width 0.3
+- Texture métal brossé Multiply 15%
+- Crescendo orchestral synchronisé au balayage
+
+SHOT C [00:54.98–01:01.32] = AFFIRMATION :
+- Flash blanc 2f → logo 100% visible
+- Burst particules or radial depuis centre (CC Particle World, burst)
+- Light ring or expansif Scale 0→200% en 20f, opacité 80→0%
+- Pulsation breath : Scale 100→102→100%, 30 frames
+- Glow edge or : rayon 8px, opacité 35%, mode Add
+- Typo "ENTENTE SPORTIVE" : or #F5C518, Bebas Neue, masque bas, 12f @ frame 61
+- Typo "GENECH" : blanc, 96px, tracking expansion 0→+150 + fade, 8f @ frame 72
+- Typo "1971" : gris #AAAAAA, 32px, fade in 12f @ frame 88
+- Freeze final : Scale 100→102% lent, grain 20%, vignette 0.6
+
+PHASE 6 ENDING [01:01.32–01:13.35] :
+Fondu au noir 3s. Logo en surimpression 30% opacité.
+Audio : fade out musical 12s. Silence absolu dernière frame.
+
+--- OVERLAYS TOUTE LA VIDÉO ---
+V1 : Grain 35mm (Overlay 15%) — permanent
+V2 : Vignette Multiply 40% — permanent
+V3 : Aberration chromatique ±0.5px — pulsation aux impacts
+V4 : Lens flares anamorphiques horizontaux — plans contre-jour (Add 25–35%)
+V5 : Particules or #F5C518 — phases 5 uniquement (Add 60%)
+
+--- TRANSITIONS ---
+Hard cut  : Phase 3 exclusivement
+Flash 2–9f: Impacts #1 #2 et logo reveal
+Zoom 4f   : Impacts (Scale 100→108–115%)
+Glitch 3f : Climax + début Shot B
+Dissolve 10–15f : Phases 1, 4 transitions
+Fondu noir 20f : Avant et après logo reveal
+Trim Paths 30f : Contour logo Shot A
+Light Sweep 76f: Logo Shot B
+Flash 2f  : Logo Shot C apparition
+
+--- AUDIO ---
+Syncs obligatoires :
+- 00:17.25 : Impact #1 kick 808
+- 00:22.90 : Beat drop
+- 00:31.65 : Double impact + crash
+- 00:49.48 : Crescendo orchestral (76f)
+- 00:54.98 : CLIMAX absolu
+- 01:13.35 : Silence absolu
+
+--- QUALITÉ FINALE ---
+Codec : H.265 ou H.264, bitrate 20 Mbps
+Format : 1080×1920 @ 24fps
+Audio : AAC 320kbps stéréo
+Rendu : Agence créative haut niveau, zéro effet template
+=== FIN DU BRIEF ===
+```
+
+---
+
+## PARTIE 5 — RECOMMANDATIONS PRATIQUES
+
+### 5.1 — Logiciels (ordre de priorité)
+
+| Tâche | Outil n°1 | Outil n°2 (gratuit) |
+|-------|-----------|---------------------|
+| Montage | Premiere Pro | DaVinci Resolve |
+| Étalonnage | DaVinci Resolve | Lumetri (Premiere) |
+| VFX / Logo Reveal | After Effects | Fusion (DaVinci) |
+| Tracking / Masque watermark | Mocha Pro / AE | DaVinci Tracker |
+| Son | Adobe Audition | Audacity |
+| Rendu | Adobe Media Encoder | Handbrake |
+
+### 5.2 — Sélection des rushs Genech
+
+**Plans INDISPENSABLES à filmer ou sélectionner :**
+1. Plan macro : Écusson Genech cousu sur maillot (gros plan, bokeh)
+2. Plan contre-jour : Joueur dos caméra, soleil derrière (golden hour)
+3. Plan action : Frappe, sprint, duel (capturer @ 120fps pour slowmo)
+4. Plan équipe : Communion, regard collectif, épaule-à-épaule
+5. Plan contemplatif : Terrain vide, stade, herbe en macro
+
+**À ÉVITER :**
+- Plans surexposés (brûlés = impossible à étalonner)
+- Shaky cam non intentionnel
+- Plans avec textes en fond ou panneaux publicitaires
+- Plans trop courts (< 5 secondes de rush)
+
+### 5.3 — Ordre de travail (workflow 8 étapes)
+
+```
+1. SUPPRESSION FILIGRANE clideo.com (première chose)
+2. IMPORT + ÉTALONNAGE de base sur tous les rushs
+3. SÉLECTION des 30 meilleurs plans (5 catégories)
+4. MONTAGE ossature sans effets (respect timecodes)
+5. SYNCHRONISATION sur la musique (BPM)
+6. AJOUT transitions et effets
+7. LOGO REVEAL (séquence indépendante, assembler en dernier)
+8. MIXAGE AUDIO + RENDU FINAL
+```
+
+### 5.4 — Checklist qualité avant livraison
+
+- [ ] Filigrane cledio.com supprimé
+- [ ] Noirs à #050C1E (jamais noir pur)
+- [ ] Grain 35mm visible sur tout le film
+- [ ] Impact #1 @ 00:17.25 : Flash + kick 808
+- [ ] Climax @ 00:31.65 : Double flash 0.38s + 0.29s
+- [ ] Logo reveal = 3 shots égaux (6.33s chacun)
+- [ ] Flash blanc logo @ 00:54.98 synchronisé sur la musique
+- [ ] Typos apparaissent pendant Shot C (frames 61, 72, 88)
+- [ ] Silence absolu sur la dernière frame
+- [ ] Vérification sur mobile (format 9:16)
+- [ ] Volume audio sur casque + haut-parleur
+
+---
+
+*Basé sur l'analyse réelle du film Angers SCO : 61.72s | 24fps | 34 scènes | 92 keyframes*
+*Adapté pour Genech Entente Sportive : 1080×1920 | 73.35s | Format 9:16*
+*Niveau : Agence créative premium | © Document usage interne production*
