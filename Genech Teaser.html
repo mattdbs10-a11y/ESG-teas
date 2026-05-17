@@ -1,0 +1,2000 @@
+<!DOCTYPE html>
+<html lang="fr" data-screen-label="Genech Teaser 00:00">
+<head>
+<meta charset="utf-8">
+<title>Genech ES — Teaser</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --night: #050C1E;
+  --night-2: #0a1530;
+  --gold: #F5C518;
+  --jersey: #1E3FAE;
+  --night-tint: #1E2B4A;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: #000;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: 'Bebas Neue', sans-serif;
+  color: #fff;
+}
+
+/* ---------- Stage scaling ---------- */
+.stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+.frame {
+  position: relative;
+  width: 1080px;
+  height: 1920px;
+  background: var(--night);
+  overflow: hidden;
+  transform-origin: center;
+  box-shadow: 0 0 80px rgba(0,0,0,0.8);
+}
+
+/* ---------- Video base ---------- */
+.video-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Color grading is set in JS */
+  filter: saturate(0.85) contrast(1.12) brightness(0.95);
+  transform-origin: center;
+  will-change: transform, filter;
+}
+
+/* ---------- Cledio.com watermark cover ---------- */
+.wm-patch {
+  position: absolute;
+  bottom: 28px;
+  right: 28px;
+  width: 320px;
+  height: 70px;
+  z-index: 5;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at center, rgba(5,12,30,0.92) 0%, rgba(5,12,30,0.7) 60%, rgba(5,12,30,0) 100%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* ---------- Color tint overlay (phase-based warm/cold) ---------- */
+.color-tint {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  will-change: background, opacity;
+}
+
+/* ---------- Lens flare (anamorphic streak) ---------- */
+.lens-flare {
+  position: absolute;
+  top: 28%;
+  left: -10%;
+  width: 130%;
+  height: 6px;
+  z-index: 12;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(170,210,255,0.05) 15%,
+    rgba(200,230,255,0.6) 45%,
+    rgba(255,255,255,0.9) 50%,
+    rgba(200,230,255,0.6) 55%,
+    rgba(170,210,255,0.05) 85%,
+    transparent 100%);
+  filter: blur(8px);
+  mix-blend-mode: screen;
+  transform: rotate(-2deg);
+  will-change: opacity, transform;
+}
+.lens-flare::after {
+  content: "";
+  position: absolute;
+  left: 45%;
+  top: -40px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.7), transparent 60%);
+  filter: blur(6px);
+}
+
+/* ---------- Light leak (warm corner) ---------- */
+.light-leak {
+  position: absolute;
+  top: -8%;
+  right: -8%;
+  width: 70%;
+  height: 50%;
+  z-index: 13;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(ellipse at top right,
+    rgba(255,170,80,0.55) 0%,
+    rgba(245,197,24,0.3) 25%,
+    rgba(245,180,40,0.15) 45%,
+    transparent 70%);
+  mix-blend-mode: screen;
+  filter: blur(20px);
+  transition: opacity 1.5s ease;
+}
+
+/* ---------- Dust particles (ambient) ---------- */
+.dust {
+  position: absolute;
+  inset: 0;
+  z-index: 14;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+.dust span {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: rgba(255, 230, 180, 0.6);
+  border-radius: 50%;
+  filter: blur(0.3px);
+  animation: dustRise linear infinite;
+}
+@keyframes dustRise {
+  0%   { transform: translateY(100vh) translateX(0); opacity: 0; }
+  10%  { opacity: 0.7; }
+  90%  { opacity: 0.5; }
+  100% { transform: translateY(-100px) translateX(20px); opacity: 0; }
+}
+
+/* ---------- Volumetric fog ---------- */
+.fog {
+  position: absolute;
+  bottom: 0;
+  left: -10%;
+  width: 120%;
+  height: 35%;
+  z-index: 11;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(to top,
+    rgba(30, 43, 74, 0.55) 0%,
+    rgba(30, 43, 74, 0.25) 40%,
+    transparent 100%);
+  filter: blur(40px);
+  mix-blend-mode: screen;
+  transition: opacity 1.5s ease;
+}
+
+/* ---------- 35mm Grain ---------- */
+.grain {
+  position: absolute;
+  inset: -20%;
+  z-index: 30;
+  pointer-events: none;
+  opacity: 0.15;
+  mix-blend-mode: overlay;
+  filter: url(#grainFilter);
+  background: #808080;
+  will-change: transform;
+  animation: grainShift 0.8s steps(6) infinite;
+}
+@keyframes grainShift {
+  0%   { transform: translate(0, 0); }
+  20%  { transform: translate(-3%, 2%); }
+  40%  { transform: translate(2%, -3%); }
+  60%  { transform: translate(-2%, -2%); }
+  80%  { transform: translate(3%, 1%); }
+  100% { transform: translate(0, 3%); }
+}
+
+/* ---------- Scan lines ---------- */
+.scan-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 31;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 3px,
+    rgba(0,0,0,0.4) 3px,
+    rgba(0,0,0,0.4) 4px
+  );
+}
+
+/* ---------- Vignette ---------- */
+.vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 32;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center,
+    transparent 30%,
+    rgba(5, 12, 30, 0.35) 60%,
+    rgba(5, 12, 30, 0.85) 95%,
+    var(--night) 110%);
+  mix-blend-mode: multiply;
+  opacity: 0.85;
+  transition: opacity 0.8s ease;
+}
+
+/* ---------- Letterbox bars (cinematic) ---------- */
+.letterbox {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 130px;
+  z-index: 41;
+  background: #050C1E;
+  pointer-events: none;
+  will-change: transform;
+}
+.letterbox-top    { top: 0;    transform: translateY(-100%); }
+.letterbox-bottom { bottom: 0; transform: translateY(100%); }
+
+/* ---------- HUD corner brackets ---------- */
+.hud-corners {
+  position: absolute;
+  inset: 60px;
+  z-index: 36;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.hud-corners .bracket {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border: 2px solid rgba(255,255,255,0.85);
+}
+.hud-corners .br-tl { top: 0; left: 0; border-right: none; border-bottom: none; }
+.hud-corners .br-tr { top: 0; right: 0; border-left: none; border-bottom: none; }
+.hud-corners .br-bl { bottom: 0; left: 0; border-right: none; border-top: none; }
+.hud-corners .br-br { bottom: 0; right: 0; border-left: none; border-top: none; }
+
+/* ---------- HUD timecode + REC ---------- */
+.hud-tc {
+  position: absolute;
+  top: 80px;
+  left: 80px;
+  z-index: 37;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 22px;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 3px;
+  font-variant-numeric: tabular-nums;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.hud-tc .rec-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ff3a3a;
+  box-shadow: 0 0 12px rgba(255,58,58,0.7);
+  animation: blinkREC 1s steps(2) infinite;
+}
+@keyframes blinkREC {
+  0%,49% { opacity: 1; }
+  50%,100% { opacity: 0.2; }
+}
+
+/* HUD viewfinder data top-right */
+.hud-vf {
+  position: absolute;
+  top: 80px;
+  right: 80px;
+  z-index: 37;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 18px;
+  color: rgba(255,255,255,0.78);
+  letter-spacing: 2px;
+  font-variant-numeric: tabular-nums;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  text-align: right;
+}
+.hud-vf span::before {
+  content: "· ";
+  color: var(--gold);
+}
+
+/* Phase label bottom */
+.phase-label {
+  position: absolute;
+  bottom: 100px;
+  left: 80px;
+  z-index: 37;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  color: rgba(255,255,255,0.9);
+  letter-spacing: 8px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.phase-label .pl-dot {
+  width: 8px; height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--gold);
+}
+
+/* ---------- Reticle / crosshair ---------- */
+.reticle {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  z-index: 38;
+  opacity: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));
+  will-change: opacity, transform;
+}
+
+/* ---------- Ball tracer ---------- */
+.ball-tracer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 35;
+  pointer-events: none;
+  opacity: 0;
+  will-change: opacity;
+}
+.ball-tracer path {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 3;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.9)) drop-shadow(0 0 14px rgba(255,255,255,0.5));
+}
+.ball-tracer .ball-dot {
+  fill: #ffffff;
+  filter: drop-shadow(0 0 10px #ffffff) drop-shadow(0 0 18px rgba(245,197,24,0.6));
+}
+
+/* ---------- Speed lines ---------- */
+.speed-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 34;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    repeating-radial-gradient(
+      circle at center,
+      transparent 0px,
+      transparent 40px,
+      rgba(255,255,255,0.35) 40px,
+      rgba(255,255,255,0.35) 41px,
+      transparent 41px,
+      transparent 80px
+    );
+  mix-blend-mode: screen;
+  will-change: opacity, transform;
+}
+
+/* ---------- Swipe wipes ---------- */
+.swipe {
+  position: absolute;
+  inset: 0;
+  z-index: 48;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform, opacity, background;
+}
+
+/* ---------- Glitch slice bands ---------- */
+.glitch-slice {
+  position: absolute;
+  inset: 0;
+  z-index: 33;
+  pointer-events: none;
+  opacity: 0;
+  background-image:
+    linear-gradient(180deg,
+      transparent 0%, transparent 12%,
+      rgba(255,255,255,0.18) 12%, rgba(255,255,255,0.18) 13%,
+      transparent 13%, transparent 28%,
+      rgba(255,255,255,0.12) 28%, rgba(255,255,255,0.12) 29%,
+      transparent 29%, transparent 47%,
+      rgba(0,180,255,0.15) 47%, rgba(0,180,255,0.15) 49%,
+      transparent 49%, transparent 71%,
+      rgba(255,0,40,0.12) 71%, rgba(255,0,40,0.12) 72%,
+      transparent 72%, transparent 88%,
+      rgba(255,255,255,0.15) 88%, rgba(255,255,255,0.15) 89%,
+      transparent 89%);
+  mix-blend-mode: screen;
+  will-change: opacity, transform;
+}
+
+/* ---------- Frame indicator (inner cropped frame) ---------- */
+.inner-frame {
+  position: absolute;
+  inset: 90px;
+  z-index: 36;
+  pointer-events: none;
+  border: 1px solid rgba(255,255,255,0.35);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.inner-frame::before {
+  content: attr(data-tick);
+  position: absolute;
+  top: -32px;
+  left: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 3px;
+}
+
+/* ---------- Goal trace (ball-tracking + trajectory to top corner) ---------- */
+.goal-trace {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 38;
+  pointer-events: none;
+  opacity: 0;
+  will-change: opacity;
+}
+.goal-trace path {
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.9))
+          drop-shadow(0 0 16px rgba(245,197,24,0.45));
+}
+.goal-trace #goalTrace1Ring {
+  filter: drop-shadow(0 0 8px rgba(255,255,255,0.9));
+}
+.goal-trace #goalTrace1Dot {
+  filter: drop-shadow(0 0 8px #F5C518);
+}
+.goal-trace #goalTrace1Target {
+  filter: drop-shadow(0 0 10px rgba(245,197,24,0.85));
+}
+
+/* ---------- Shape overlays (jersey 1 / cross / trophy) ---------- */
+.shape-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 38;
+  pointer-events: none;
+  opacity: 0;
+  will-change: opacity;
+}
+.shape-overlay path,
+.shape-overlay circle,
+.shape-overlay rect {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.85))
+          drop-shadow(0 0 14px rgba(245,197,24,0.4));
+}
+#shapeJerseyPath { stroke: #ffffff; stroke-width: 7; }
+#shapeCrossPath  { stroke: #F5C518; stroke-width: 6; }
+#shapeTrophyPath { stroke: #F5C518; stroke-width: 4; }
+
+/* ---------- HUD elements — HIDDEN per request ---------- */
+.hud-corners, .hud-tc, .hud-vf, .inner-frame, .phase-label { display: none !important; }
+
+/* ---------- Chromatic aberration glitch overlay ---------- */
+.chroma-glitch {
+  position: absolute;
+  inset: 0;
+  z-index: 33;
+  pointer-events: none;
+  opacity: 0;
+  background-image:
+    linear-gradient(90deg, rgba(255,0,40,0.3) 0%, transparent 30%),
+    linear-gradient(-90deg, rgba(0,180,255,0.3) 0%, transparent 30%);
+  mix-blend-mode: screen;
+  will-change: opacity, transform;
+}
+
+/* ---------- White flash ---------- */
+.flash {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  background: #fff;
+  opacity: 0;
+  will-change: opacity;
+}
+
+/* ---------- Black intro fade ---------- */
+.black-fade {
+  position: absolute;
+  inset: 0;
+  z-index: 51;
+  pointer-events: none;
+  background: var(--night);
+  opacity: 1;
+  will-change: opacity;
+}
+
+/* ---------- Kinetic text overlay (phase 2 + 4) ---------- */
+.kinetic-text {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  will-change: opacity;
+}
+.kt-line1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 180px;
+  color: #fff;
+  letter-spacing: 12px;
+  font-weight: 400;
+  line-height: 1;
+  overflow: hidden;
+  text-shadow: 0 0 14px rgba(255,255,255,0.15);
+  position: relative;
+}
+.kt-line1 span {
+  display: inline-block;
+  transform: translateX(-110%);
+  transition: transform 0.4s cubic-bezier(.7,0,.2,1);
+}
+.kt-line2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 76px;
+  color: var(--gold);
+  letter-spacing: 20px;
+  margin-top: 24px;
+  text-shadow: 0 0 16px rgba(245,197,24,0.4);
+}
+.kt-line2 span {
+  display: inline-block;
+  letter-spacing: 0;
+  transition: letter-spacing 0.4s ease-out;
+}
+.kt-show .kt-line1 span { transform: translateX(0); }
+.kt-show .kt-line2 span { letter-spacing: 20px; }
+
+/* Phase 4 secondary text */
+.kt-secondary {
+  position: absolute;
+  bottom: 18%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 40;
+  opacity: 0;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 64px;
+  color: var(--gold);
+  letter-spacing: 16px;
+  text-shadow: 0 0 18px rgba(245,197,24,0.5);
+  pointer-events: none;
+}
+
+/* ---------- Void reveal (V2, Angers SCO style) ---------- */
+.void-reveal {
+  position: absolute;
+  inset: 0;
+  z-index: 64;
+  background: #020306;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  will-change: opacity;
+}
+.vr-void {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 45%, rgba(15,20,30,0.55) 0%, transparent 70%),
+    radial-gradient(ellipse at center, #050810 0%, #020306 60%, #010205 100%);
+}
+.vr-stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.vr-stars span {
+  position: absolute;
+  background: #ffffff;
+  border-radius: 50%;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+/* Light beams */
+.vr-beam {
+  position: absolute;
+  top: -5%;
+  width: 220px;
+  height: 80%;
+  opacity: 0;
+  mix-blend-mode: screen;
+  filter: blur(18px);
+  will-change: opacity, transform;
+  pointer-events: none;
+}
+.vr-beam-1 {
+  left: 45%;
+  background: linear-gradient(180deg,
+    rgba(245,235,200,0.0) 0%,
+    rgba(250,245,220,0.55) 8%,
+    rgba(245,210,140,0.30) 30%,
+    rgba(245,197,24,0.10) 55%,
+    transparent 85%);
+  transform: rotate(-3deg);
+}
+.vr-beam-2 {
+  left: 50%;
+  margin-left: -110px;
+  width: 280px;
+  background: linear-gradient(180deg,
+    rgba(255,250,235,0.0) 0%,
+    rgba(255,250,235,0.75) 6%,
+    rgba(245,220,160,0.40) 28%,
+    rgba(245,197,24,0.12) 52%,
+    transparent 82%);
+}
+.vr-beam-3 {
+  right: 45%;
+  background: linear-gradient(180deg,
+    rgba(245,235,200,0.0) 0%,
+    rgba(250,245,220,0.55) 8%,
+    rgba(245,210,140,0.30) 30%,
+    rgba(245,197,24,0.10) 55%,
+    transparent 85%);
+  transform: rotate(3deg);
+}
+
+/* Smoke layers — concentrated centrally, rising from below */
+.vr-smoke {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0;
+  will-change: opacity;
+}
+.vr-smoke .pr-cloud {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform, opacity;
+}
+.vr-smoke-back .pr-cloud {
+  background: radial-gradient(circle,
+    rgba(200,210,225,0.65) 0%,
+    rgba(150,160,180,0.40) 30%,
+    rgba(90,100,120,0.20) 55%,
+    transparent 78%);
+  filter: blur(46px);
+}
+.vr-smoke-mid .pr-cloud {
+  background: radial-gradient(circle,
+    rgba(220,225,240,0.55) 0%,
+    rgba(180,190,210,0.30) 35%,
+    transparent 72%);
+  filter: blur(34px);
+}
+.vr-smoke-front .pr-cloud {
+  background: radial-gradient(circle,
+    rgba(245,248,255,0.55) 0%,
+    rgba(220,225,240,0.22) 35%,
+    transparent 72%);
+  filter: blur(38px);
+}
+
+/* Logo wrap (centered slightly above middle) */
+.pr-logo-wrap {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.pr-logo {
+  position: absolute;
+  width: 720px;
+  height: 720px;
+  left: -360px;
+  top: -360px;
+  opacity: 0;
+  will-change: opacity, transform, filter;
+}
+/* Layered logo parts — each masked to one element of the badge */
+.lp {
+  position: absolute;
+  width: 720px;
+  height: 720px;
+  left: -360px;
+  top: -360px;
+  background: url('assets/logo.png') no-repeat center/contain;
+  opacity: 0;
+  will-change: opacity, filter;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+          mask-position: center;
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+}
+/* 1. Hermits ring — annulus r [180, 250] */
+.lp-hermits {
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 720 720'><rect width='720' height='720' fill='black'/><circle cx='360' cy='360' r='250' fill='white'/><circle cx='360' cy='360' r='180' fill='black'/></svg>");
+          mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 720 720'><rect width='720' height='720' fill='black'/><circle cx='360' cy='360' r='250' fill='white'/><circle cx='360' cy='360' r='180' fill='black'/></svg>");
+}
+/* 2. Shield base — disc r < 180, desaturated (just navy base, gold elements muted) */
+.lp-shield {
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 720 720'><circle cx='360' cy='360' r='180' fill='white'/></svg>");
+          mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 720 720'><circle cx='360' cy='360' r='180' fill='white'/></svg>");
+  filter: saturate(0.05) brightness(0.55);
+}
+/* 3. Cross + stars — same disc, full colour. Overlays lp-shield to reveal gold */
+.lp-cross {
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 720 720'><circle cx='360' cy='360' r='180' fill='white'/></svg>");
+          mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 720 720'><circle cx='360' cy='360' r='180' fill='white'/></svg>");
+}
+/* 4. Outer rings — annulus r [295, 360] */
+.lp-outer {
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 720 720'><rect width='720' height='720' fill='black'/><circle cx='360' cy='360' r='360' fill='white'/><circle cx='360' cy='360' r='295' fill='black'/></svg>");
+          mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 720 720'><rect width='720' height='720' fill='black'/><circle cx='360' cy='360' r='360' fill='white'/><circle cx='360' cy='360' r='295' fill='black'/></svg>");
+}
+/* 5. Text band (GENECH + ENTENTE SPORTIVE + 1971) — annulus r [250, 295] */
+.lp-text {
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 720 720'><rect width='720' height='720' fill='black'/><circle cx='360' cy='360' r='295' fill='white'/><circle cx='360' cy='360' r='250' fill='black'/></svg>");
+          mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 720 720'><rect width='720' height='720' fill='black'/><circle cx='360' cy='360' r='295' fill='white'/><circle cx='360' cy='360' r='250' fill='black'/></svg>");
+}
+.pr-logo-glow {
+  position: absolute;
+  width: 1000px;
+  height: 1000px;
+  left: -500px;
+  top: -500px;
+  background: radial-gradient(circle,
+    rgba(245,197,24,0.42) 0%,
+    rgba(255,235,180,0.20) 25%,
+    transparent 60%);
+  filter: blur(30px);
+  mix-blend-mode: screen;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+.pr-ring {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  left: -100px;
+  top: -100px;
+  border: 3px solid rgba(245,197,24,0.85);
+  border-radius: 50%;
+  opacity: 0;
+  box-shadow: 0 0 30px rgba(245,197,24,0.7), inset 0 0 20px rgba(245,197,24,0.4);
+  will-change: opacity, transform;
+}
+
+/* Reflection — logo inverted below horizon */
+.vr-reflection {
+  position: absolute;
+  left: 50%;
+  top: 65%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+.vr-reflection img {
+  position: absolute;
+  width: 720px;
+  height: 720px;
+  left: -360px;
+  top: -120px;
+  transform: scaleY(-1);
+  filter: blur(3px) brightness(0.65);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.55) 22%, transparent 85%);
+          mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.55) 22%, transparent 85%);
+}
+
+/* Horizon line */
+.vr-horizon {
+  position: absolute;
+  left: 0; right: 0;
+  top: 62%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(245,197,24,0.0) 20%,
+    rgba(245,197,24,0.25) 50%,
+    rgba(245,197,24,0.0) 80%,
+    transparent 100%);
+  box-shadow: 0 0 8px rgba(245,197,24,0.35);
+  opacity: 0;
+  will-change: opacity;
+}
+
+/* Gold particles */
+.pr-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  will-change: opacity;
+}
+.pr-particles span {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: #F5C518;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #F5C518, 0 0 16px rgba(245,197,24,0.5);
+  will-change: transform, opacity;
+}
+
+/* ENTENTE SPORTIVE text */
+.pr-text {
+  position: absolute;
+  left: 0; right: 0;
+  top: 84%;
+  text-align: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 56px;
+  letter-spacing: 26px;
+  padding-left: 26px;
+  color: #F5C518;
+  text-shadow: 0 0 18px rgba(245,197,24,0.6), 0 0 38px rgba(245,197,24,0.3);
+  opacity: 0;
+  clip-path: inset(100% 0 0 0);
+  will-change: opacity, clip-path, transform;
+}
+
+.pr-opener {
+  position: absolute;
+  inset: 0;
+  background: #020306;
+  opacity: 0;
+  will-change: opacity;
+}
+
+/* =================================================================
+   FRESH REVEAL — 15s logo reveal (replaces outro card + pitch reveal)
+   ================================================================= */
+.fresh-reveal {
+  position: absolute; inset: 0;
+  z-index: 66;
+  background: transparent;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  will-change: opacity;
+}
+.fr-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 90% 70% at 50% 50%, #0a163a 0%, #050C1E 60%, #02060f 100%);
+  z-index: 1;
+}
+.fr-particles {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+.fr-particles span {
+  position: absolute;
+  border-radius: 50%;
+  background: #F5C518;
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+  top: 0; left: 0;
+}
+.fr-arcs {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  overflow: visible;
+}
+.fr-arcs circle { fill: none; stroke-linecap: round; }
+#frArcWhite { stroke: #ffffff; stroke-width: 2; filter: drop-shadow(0 0 6px rgba(255,255,255,0.5)); }
+#frArcGold  { stroke: #F5C518; stroke-width: 3; filter: drop-shadow(0 0 10px rgba(245,197,24,0.6)); }
+.fr-logo-ghost, .fr-logo {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 760px; height: 760px;
+  margin-left: -380px; margin-top: -380px;
+  background: url('assets/logo.png') no-repeat center/contain;
+  opacity: 0;
+  transform-origin: center center;
+  will-change: opacity, transform, filter;
+}
+.fr-logo-ghost { z-index: 4; filter: blur(20px) brightness(0.55) saturate(0.4); }
+.fr-logo { z-index: 5; }
+.fr-ring {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 640px; height: 640px;
+  margin-left: -320px; margin-top: -320px;
+  border: 3px solid #F5C518;
+  border-radius: 50%;
+  opacity: 0;
+  box-shadow: 0 0 40px #F5C518;
+  mix-blend-mode: screen;
+  z-index: 6;
+  transform-origin: center center;
+  will-change: opacity, transform;
+}
+.fr-burst {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 7;
+  will-change: opacity;
+}
+.fr-burst span {
+  position: absolute;
+  left: 540px; top: 960px;
+  border-radius: 50%;
+  background: #F5C518;
+  box-shadow: 0 0 8px #F5C518;
+  mix-blend-mode: screen;
+  transform-origin: 0 0;
+  will-change: transform, opacity;
+}
+.fr-flash {
+  position: absolute; inset: 0;
+  background: #ffffff;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9;
+  will-change: opacity;
+}
+
+/* ---------- (sentinel) ---------- */
+.reveal {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  background: var(--night);
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  will-change: opacity;
+}
+.reveal-bg-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center,
+    rgba(30, 43, 74, 0.6) 0%,
+    transparent 55%);
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+/* SMOKE / FUMIGÈNE layers */
+.smoke-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  will-change: opacity;
+}
+.smoke-cloud {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(50px);
+  will-change: transform, opacity;
+}
+.smoke-back .smoke-cloud {
+  background: radial-gradient(circle,
+    rgba(45,68,120,0.85) 0%,
+    rgba(28,42,80,0.55) 28%,
+    rgba(15,24,52,0.3) 55%,
+    transparent 78%);
+  filter: blur(70px);
+}
+.smoke-mid .smoke-cloud {
+  background: radial-gradient(circle,
+    rgba(95,130,200,0.6) 0%,
+    rgba(55,85,150,0.35) 35%,
+    transparent 72%);
+  filter: blur(50px);
+}
+.smoke-front .smoke-cloud {
+  background: radial-gradient(circle,
+    rgba(210,225,250,0.45) 0%,
+    rgba(170,190,230,0.22) 35%,
+    transparent 72%);
+  filter: blur(55px);
+}
+.smoke-cloud.tinted-gold {
+  background: radial-gradient(circle,
+    rgba(245,197,24,0.5) 0%,
+    rgba(220,160,40,0.25) 30%,
+    transparent 72%);
+  filter: blur(60px);
+}
+.reveal-fog {
+  position: absolute;
+  bottom: 0;
+  left: -10%;
+  width: 120%;
+  height: 50%;
+  background: linear-gradient(to top,
+    rgba(30, 43, 74, 0.4) 0%,
+    transparent 100%);
+  filter: blur(50px);
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+.reveal-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.reveal-particles span {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: var(--gold);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--gold), 0 0 16px rgba(245,197,24,0.6);
+  opacity: 0;
+  animation: revealParticle linear infinite;
+}
+@keyframes revealParticle {
+  0%   { transform: translate(0, 110vh) scale(0.5); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.8; }
+  100% { transform: translate(var(--dx, 0px), -10vh) scale(1.1); opacity: 0; }
+}
+
+/* Reveal center stack */
+.reveal-stack {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.reveal-logo-area {
+  position: relative;
+  width: 800px;
+  height: 800px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ring-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.ring-outer {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 3;
+  stroke-dasharray: 2388;
+  stroke-dashoffset: 2388;
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.6));
+  opacity: 0.55;
+}
+.ring-inner {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 4;
+  stroke-dasharray: 2136;
+  stroke-dashoffset: 2136;
+  filter: drop-shadow(0 0 10px rgba(245,197,24,0.85));
+  opacity: 0.8;
+}
+
+/* Logo ghost (sequence A) */
+.logo-ghost {
+  position: absolute;
+  width: 620px;
+  height: 620px;
+  background-image: url('assets/logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0;
+  filter: blur(20px);
+  will-change: opacity, filter, transform;
+}
+
+/* Logo full (sequence B + C) */
+.logo-full {
+  position: absolute;
+  width: 620px;
+  height: 620px;
+  background-image: url('assets/logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0;
+  filter: drop-shadow(0 0 24px rgba(245,197,24,0.6));
+  will-change: opacity, transform, clip-path;
+  /* Light sweep is applied via clip-path */
+}
+
+/* Light sweep beam (during sequence B) */
+.light-sweep {
+  position: absolute;
+  top: 0;
+  left: -20%;
+  width: 30%;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255,250,220,0.0) 30%,
+    rgba(255,250,220,0.85) 50%,
+    rgba(255,250,220,0.0) 70%,
+    transparent 100%);
+  filter: blur(40px);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transform: translateX(0);
+  will-change: opacity, transform;
+}
+
+/* Expanding ring on flash */
+.flash-ring {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border: 4px solid var(--gold);
+  border-radius: 50%;
+  opacity: 0;
+  box-shadow: 0 0 30px rgba(245,197,24,0.9), inset 0 0 20px rgba(245,197,24,0.6);
+  will-change: transform, opacity;
+}
+
+/* Particle burst on flash */
+.burst {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  will-change: opacity;
+}
+.burst span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  background: var(--gold);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--gold);
+  transform-origin: 0 0;
+}
+
+/* Final texts after reveal */
+.final-text-group {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  pointer-events: none;
+}
+.final-genech {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 360px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 168px;
+  color: #fff;
+  letter-spacing: 18px;
+  line-height: 1;
+  opacity: 0;
+  text-shadow: 0 0 20px rgba(255,255,255,0.25);
+  will-change: opacity, letter-spacing;
+}
+.final-es {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 480px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 78px;
+  color: var(--gold);
+  letter-spacing: 28px;
+  opacity: 0;
+  text-shadow: 0 0 18px rgba(245,197,24,0.55);
+  clip-path: inset(100% 0 0 0);
+  will-change: clip-path, opacity;
+}
+.final-1971 {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 380px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 36px;
+  color: #ccc;
+  letter-spacing: 40px;
+  padding-left: 40px;
+  opacity: 0;
+  will-change: opacity;
+}
+
+/* ---------- Final fade out ---------- */
+.final-fade {
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+  background: var(--night);
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* ---------- Controls ---------- */
+.controls {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 10px 18px;
+  background: rgba(10, 16, 32, 0.78);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 100px;
+  z-index: 1000;
+  font-family: 'Montserrat', sans-serif;
+  color: #fff;
+  font-size: 13px;
+  letter-spacing: 1px;
+  opacity: 0.92;
+  transition: opacity 0.4s ease;
+}
+.controls.hidden { opacity: 0; pointer-events: none; }
+.controls button {
+  background: var(--gold);
+  color: var(--night);
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.controls input[type=range] {
+  width: 360px;
+  accent-color: var(--gold);
+}
+.controls .tc { font-variant-numeric: tabular-nums; min-width: 110px; }
+.controls .phase-jump {
+  display: flex;
+  gap: 4px;
+}
+.controls .phase-jump button {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  font-size: 11px;
+  font-weight: 500;
+}
+.controls .phase-jump button.active {
+  background: var(--gold);
+  color: var(--night);
+}
+
+/* ---------- Tweaks panel host ---------- */
+#tweaks-host { position: fixed; inset: 0; pointer-events: none; z-index: 2000; }
+#tweaks-host > * { pointer-events: auto; }
+
+/* ---------- Download button ---------- */
+#downloadBtn {
+  background: linear-gradient(135deg, #F5C518 0%, #e0a800 100%);
+  color: var(--night);
+  border: none;
+  height: 36px;
+  border-radius: 18px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 0.5px;
+  padding: 0 14px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  transition: opacity 0.2s, transform 0.15s;
+}
+#downloadBtn:hover:not(:disabled) { transform: scale(1.04); }
+#downloadBtn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+#downloadBtn.recording {
+  background: linear-gradient(135deg, #e02020 0%, #a00 100%);
+  color: #fff;
+  animation: recPulse 1s ease-in-out infinite;
+}
+@keyframes recPulse { 0%,100%{opacity:1} 50%{opacity:0.65} }
+
+/* ---------- Export overlay ---------- */
+#exportOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  background: rgba(5,12,30,0.92);
+  backdrop-filter: blur(16px);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  font-family: 'Montserrat', sans-serif;
+  color: #fff;
+  text-align: center;
+  padding: 40px;
+}
+#exportOverlay h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  margin: 0;
+}
+#exportOverlay p {
+  font-size: 15px;
+  line-height: 1.7;
+  max-width: 480px;
+  opacity: 0.85;
+}
+#exportOverlay .exp-step {
+  background: rgba(245,197,24,0.12);
+  border: 1px solid rgba(245,197,24,0.3);
+  border-radius: 12px;
+  padding: 16px 24px;
+  font-size: 14px;
+  max-width: 480px;
+  text-align: left;
+  line-height: 1.8;
+}
+#exportOverlay .exp-step b { color: var(--gold); }
+#exportOverlay .exp-cancel {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.5);
+  padding: 8px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: 'Montserrat', sans-serif;
+  margin-top: 8px;
+}
+#exportOverlay .exp-cancel:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
+#exportProgress {
+  display: none;
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 3000;
+  background: rgba(10,16,32,0.92);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(245,197,24,0.4);
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  color: #fff;
+  letter-spacing: 0.5px;
+  gap: 10px;
+  align-items: center;
+}
+#exportProgress .ep-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #e02020;
+  animation: recPulse 1s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+</style>
+</head>
+<body>
+
+<!-- SVG filters (grain, chroma) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="grainFilter">
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" seed="3"/>
+    <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0   0 0 0 1.4 -0.2"/>
+  </filter>
+  <filter id="chromaGlitchFilter" x="-10%" y="-10%" width="120%" height="120%">
+    <feColorMatrix in="SourceGraphic" type="matrix"
+      values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r"/>
+    <feOffset in="r" dx="10" dy="0" result="r2"/>
+    <feColorMatrix in="SourceGraphic" type="matrix"
+      values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="g"/>
+    <feColorMatrix in="SourceGraphic" type="matrix"
+      values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="b"/>
+    <feOffset in="b" dx="-10" dy="0" result="b2"/>
+    <feBlend in="r2" in2="g" mode="screen" result="rg"/>
+    <feBlend in="rg" in2="b2" mode="screen"/>
+  </filter>
+</svg>
+
+<div class="stage" id="stage">
+  <div class="frame" id="frame" data-screen-label="Genech Teaser 00:00">
+
+    <!-- Video -->
+    <div class="video-wrap" id="videoWrap">
+      <video class="video" id="video" src="assets/source.mp4" playsinline preload="auto"></video>
+    </div>
+
+    <!-- Phase color tint -->
+    <div class="color-tint" id="colorTint"></div>
+
+    <!-- Lens flare -->
+    <div class="lens-flare" id="lensFlare"></div>
+
+    <!-- Light leak -->
+    <div class="light-leak" id="lightLeak"></div>
+
+    <!-- Dust particles (ambient) -->
+    <div class="dust" id="dust"></div>
+
+    <!-- Volumetric fog -->
+    <div class="fog" id="fog"></div>
+
+    <!-- Chromatic glitch overlay -->
+    <div class="chroma-glitch" id="chromaGlitch"></div>
+
+    <!-- Glitch slice bands -->
+    <div class="glitch-slice" id="glitchSlice"></div>
+
+    <!-- Speed lines (radial) -->
+    <div class="speed-lines" id="speedLines"></div>
+
+    <!-- Ball tracer -->
+    <svg class="ball-tracer" id="ballTracer" viewBox="0 0 1080 1920" preserveAspectRatio="none">
+      <path id="tracerPath" d="M 80 1500 Q 540 100 1000 1100"/>
+      <circle id="tracerBall" class="ball-dot" cx="80" cy="1500" r="9" opacity="0"/>
+    </svg>
+
+    <!-- HUD corner brackets -->
+    <div class="hud-corners" id="hudCorners">
+      <span class="bracket br-tl"></span>
+      <span class="bracket br-tr"></span>
+      <span class="bracket br-bl"></span>
+      <span class="bracket br-br"></span>
+    </div>
+
+    <!-- Inner frame indicator -->
+    <div class="inner-frame" id="innerFrame" data-tick="1.85 · CROP"></div>
+
+    <!-- HUD top-left: REC + timecode -->
+    <div class="hud-tc" id="hudTC">
+      <span class="rec-dot"></span>
+      <span>REC</span>
+      <span style="margin-left:10px;color:rgba(245,197,24,0.85)">·</span>
+      <span id="hudTime">00:00:00:00</span>
+    </div>
+
+    <!-- HUD top-right: viewfinder data -->
+    <div class="hud-vf" id="hudVF">
+      <span>F 2.8</span>
+      <span>ISO 800</span>
+      <span>1/250</span>
+      <span>24 FPS</span>
+    </div>
+
+    <!-- Phase label bottom-left -->
+    <div class="phase-label" id="phaseLabel">
+      <span class="pl-dot"></span>
+      <span id="phaseLabelText">CHAPITRE I</span>
+    </div>
+
+    <!-- Reticle / crosshair -->
+    <svg class="reticle" id="reticle" viewBox="0 0 200 200">
+      <circle cx="100" cy="100" r="80" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="6 8"/>
+      <circle cx="100" cy="100" r="42" fill="none" stroke="#F5C518" stroke-width="1.5"/>
+      <line x1="100" y1="6"  x2="100" y2="32"  stroke="#ffffff" stroke-width="1.5"/>
+      <line x1="100" y1="168" x2="100" y2="194" stroke="#ffffff" stroke-width="1.5"/>
+      <line x1="6"  y1="100" x2="32"  y2="100" stroke="#ffffff" stroke-width="1.5"/>
+      <line x1="168" y1="100" x2="194" y2="100" stroke="#ffffff" stroke-width="1.5"/>
+      <circle cx="100" cy="100" r="3" fill="#F5C518"/>
+    </svg>
+
+    <!-- Swipe wipe -->
+    <div class="swipe" id="swipe"></div>
+
+    <!-- Iris transition overlay (radial wipe) -->
+    <div id="irisOverlay" style="position:absolute;inset:0;z-index:48;pointer-events:none;opacity:0;will-change:opacity,background;"></div>
+
+    <!-- Vertical bars sweep overlay -->
+    <div id="barsOverlay" style="position:absolute;inset:0;z-index:48;pointer-events:none;opacity:0;will-change:opacity,clip-path,background;"></div>
+
+    <!-- Letterbox bars -->
+    <div class="letterbox letterbox-top"    id="letterTop"></div>
+    <div class="letterbox letterbox-bottom" id="letterBot"></div>
+
+    <!-- Grain -->
+    <div class="grain" id="grain"></div>
+
+    <!-- Scan lines -->
+    <div class="scan-lines"></div>
+
+    <!-- Vignette -->
+    <div class="vignette" id="vignette"></div>
+
+    <!-- Shape overlays (trophy + goal trace) -->
+    <svg class="shape-overlay" id="shapeJersey" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid meet" style="display:none">
+      <path id="shapeJerseyPath" d="M 460 810 L 545 765 L 545 1060 M 450 1075 L 640 1075"/>
+    </svg>
+    <svg class="shape-overlay" id="shapeCross" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid meet" style="display:none">
+      <path id="shapeCrossPath" d="M 540 280 L 540 820 M 260 550 L 820 550"/>
+    </svg>
+
+    <!-- Goal 1 — ball-tracking circle + fading trajectory toward top corner -->
+    <svg class="goal-trace" id="goalTrace1" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <linearGradient id="trailGrad" gradientUnits="userSpaceOnUse" x1="740" y1="898" x2="154" y2="620">
+          <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.15"/>
+          <stop offset="60%"  stop-color="#ffffff" stop-opacity="0.7"/>
+          <stop offset="100%" stop-color="#ffffff" stop-opacity="1"/>
+        </linearGradient>
+      </defs>
+      <!-- Trajectory path (drawn progressively) -->
+      <path id="goalTrace1Path"
+            d="M 740 898 Q 440 700 154 620"
+            fill="none"
+            stroke="url(#trailGrad)"
+            stroke-width="5"
+            stroke-linecap="round"/>
+      <!-- Ring circling the ball -->
+      <circle id="goalTrace1Ring" cx="740" cy="898" r="38"
+              fill="none" stroke="#ffffff" stroke-width="3" opacity="0"/>
+      <!-- Inner accent dot -->
+      <circle id="goalTrace1Dot" cx="740" cy="898" r="5"
+              fill="#F5C518" opacity="0"/>
+      <!-- Lucarne target marker -->
+      <g id="goalTrace1Target" opacity="0">
+        <circle cx="154" cy="620" r="22" fill="none" stroke="#F5C518" stroke-width="3"/>
+        <line x1="154" y1="588" x2="154" y2="604" stroke="#F5C518" stroke-width="3"/>
+        <line x1="154" y1="636" x2="154" y2="652" stroke="#F5C518" stroke-width="3"/>
+        <line x1="122" y1="620" x2="138" y2="620" stroke="#F5C518" stroke-width="3"/>
+        <line x1="170" y1="620" x2="186" y2="620" stroke="#F5C518" stroke-width="3"/>
+      </g>
+    </svg>
+    <svg class="shape-overlay" id="shapeTrophy" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid meet">
+      <path id="shapeTrophyPath"
+        d="M 390 700
+           Q 390 690 405 685
+           L 675 685
+           Q 690 690 690 700
+           Q 690 800 660 870
+           Q 625 945 555 960
+           Q 545 962 535 960
+           Q 465 945 430 870
+           Q 400 800 390 700 Z
+           M 690 715
+           Q 760 720 765 775
+           Q 770 830 720 860
+           Q 700 870 680 868
+           M 390 715
+           Q 320 720 315 775
+           Q 310 830 360 860
+           Q 380 870 400 868
+           M 540 962
+           L 540 1080
+           M 480 1090
+           Q 540 1085 600 1090
+           L 605 1140
+           Q 540 1135 475 1140 Z"/>
+    </svg>
+
+    <!-- White flash -->
+    <div class="flash" id="flash"></div>
+
+    <!-- Intro/transition black fade -->
+    <div class="black-fade" id="blackFade"></div>
+
+    <!-- ===== FRESH REVEAL (15s, replaces outro card + pitch reveal) ===== -->
+    <div class="fresh-reveal" id="freshReveal">
+      <div class="fr-bg"></div>
+      <div class="fr-particles" id="frParticles"></div>
+      <svg class="fr-arcs" id="frArcs" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid meet">
+        <circle id="frArcWhite" cx="540" cy="960" r="430"></circle>
+        <circle id="frArcGold"  cx="540" cy="960" r="360"></circle>
+      </svg>
+      <div class="fr-logo-ghost" id="frLogoGhost"></div>
+      <div class="fr-logo" id="frLogo"></div>
+      <div class="fr-ring" id="frRing"></div>
+      <div class="fr-burst" id="frBurst"></div>
+      <div class="fr-flash" id="frFlash"></div>
+    </div>
+
+    <!-- ===== REVEAL LAYER (smoke / fumigène) ===== -->
+    <div class="reveal" id="reveal">
+      <div class="reveal-bg-glow" id="revealBgGlow"></div>
+      <div class="reveal-fog" id="revealFog"></div>
+
+      <!-- Ambient gold particles rising (kept, used as embers) -->
+      <div class="reveal-particles" id="revealParticles"></div>
+
+      <!-- SMOKE layers (back → mid → front) -->
+      <div class="smoke-layer smoke-back"  id="smokeBack"></div>
+      <div class="smoke-layer smoke-mid"   id="smokeMid"></div>
+      <div class="smoke-layer smoke-front" id="smokeFront"></div>
+
+      <!-- Logo + rings stack (rings hidden in smoke reveal) -->
+      <div class="reveal-stack">
+        <div class="reveal-logo-area">
+          <svg class="ring-svg" viewBox="0 0 800 800" aria-hidden="true" style="display:none">
+            <circle class="ring-outer" id="ringOuter" cx="400" cy="400" r="380"
+                    transform="rotate(-90 400 400)"/>
+            <circle class="ring-inner" id="ringInner" cx="400" cy="400" r="340"
+                    transform="rotate(-90 400 400)"/>
+          </svg>
+          <div class="logo-ghost" id="logoGhost" style="display:none"></div>
+          <div class="logo-full"  id="logoFull"></div>
+          <div class="light-sweep" id="lightSweep" style="display:none"></div>
+          <div class="flash-ring" id="flashRing" style="display:none"></div>
+          <div class="burst" id="burst" style="display:none"></div>
+        </div>
+      </div>
+
+      <!-- Final texts -->
+      <div class="final-text-group">
+        <div class="final-genech" id="finalGenech">GENECH</div>
+        <div class="final-es" id="finalES">ENTENTE SPORTIVE</div>
+        <div class="final-1971" id="final1971">1971</div>
+      </div>
+    </div>
+
+    <!-- Black outro card -->
+    <div id="outroCard" style="position:absolute;inset:0;z-index:62;background:radial-gradient(ellipse at center, #050C1E 0%, #03081a 55%, #01030a 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:60px;padding:120px 90px;opacity:0;pointer-events:none;overflow:hidden;will-change:opacity;">
+      <!-- Soft gold halo (centered glow) -->
+      <div id="outroHalo" style="position:absolute;left:50%;top:50%;width:1500px;height:1500px;margin-left:-750px;margin-top:-750px;background:radial-gradient(circle, rgba(245,197,24,0.12) 0%, rgba(245,197,24,0.05) 25%, transparent 55%);filter:blur(40px);opacity:0;mix-blend-mode:screen;will-change:opacity,transform;"></div>
+
+      <!-- Slow rising gold embers -->
+      <div id="outroEmbers" style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:0;will-change:opacity;"></div>
+
+      <!-- Volumetric horizontal light streak -->
+      <div id="outroStreak" style="position:absolute;top:42%;left:-10%;width:130%;height:4px;background:linear-gradient(90deg, transparent 0%, rgba(180,210,255,0.15) 30%, rgba(245,197,24,0.55) 50%, rgba(180,210,255,0.15) 70%, transparent 100%);filter:blur(10px);mix-blend-mode:screen;opacity:0;transform:rotate(-1.5deg);will-change:opacity;"></div>
+
+      <!-- Soft vignette inside the card -->
+      <div id="outroVignette" style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center, transparent 30%, rgba(1,3,10,0.7) 80%, rgba(1,3,10,1) 100%);"></div>
+
+      <!-- Scan lines (very subtle) -->
+      <div style="position:absolute;inset:0;pointer-events:none;opacity:0.04;background-image:repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(0,0,0,0.4) 3px, rgba(0,0,0,0.4) 4px);"></div>
+
+      <!-- Texts -->
+      <div id="outroLine1" style="position:relative;z-index:2;font-family:'Bebas Neue',sans-serif;font-size:86px;line-height:1.05;letter-spacing:6px;color:#ffffff;text-align:center;text-shadow:0 0 20px rgba(245,197,24,0.25),0 0 40px rgba(245,197,24,0.12);opacity:0;transform:translateY(20px);will-change:opacity,transform;">
+        <span class="ol-word">PUISER</span> <span class="ol-word">DANS</span> <span class="ol-word">NOS</span> <span class="ol-word">RACINES</span><span class="ol-dots">...</span>
+      </div>
+      <div id="outroLine2" style="position:relative;z-index:2;font-family:'Bebas Neue',sans-serif;font-size:76px;line-height:1.1;letter-spacing:5px;color:#F5C518;text-align:center;text-shadow:0 0 24px rgba(245,197,24,0.55),0 0 60px rgba(245,197,24,0.25);opacity:0;transform:translateY(20px);will-change:opacity,transform;max-width:900px;">
+        <span class="ol-word">POUR</span> <span class="ol-word">ÉCRIRE</span> <span class="ol-word">LA</span> <span class="ol-word">SUITE</span> <span class="ol-word">DE</span> <span class="ol-word">NOTRE</span> <span class="ol-word">HISTOIRE</span>
+      </div>
+      <div id="outroUnderline" style="position:relative;z-index:2;width:0;height:2px;background:linear-gradient(90deg,transparent,#F5C518,transparent);box-shadow:0 0 14px rgba(245,197,24,0.7);margin-top:-30px;will-change:width,opacity;"></div>
+    </div>
+
+    <!-- ===== VOID REVEAL (12s, end of film — Angers SCO style) ===== -->
+    <div class="void-reveal" id="pitchReveal">
+      <!-- Deep void background -->
+      <div class="vr-void"></div>
+      <!-- Star field -->
+      <div class="vr-stars" id="vrStars"></div>
+
+      <!-- Vertical light beams (3 cones) -->
+      <div class="vr-beam vr-beam-1" id="vrBeam1"></div>
+      <div class="vr-beam vr-beam-2" id="vrBeam2"></div>
+      <div class="vr-beam vr-beam-3" id="vrBeam3"></div>
+
+      <!-- Rising smoke (3 layers, JS-built) -->
+      <div class="vr-smoke vr-smoke-back"  id="prSmokeBack"></div>
+      <div class="vr-smoke vr-smoke-mid"   id="prSmokeMid"></div>
+      <div class="vr-smoke vr-smoke-front" id="prSmokeFront"></div>
+
+      <!-- Reflection group (below horizon) -->
+      <div class="vr-reflection" id="vrReflection">
+        <img src="assets/logo.png" alt=""/>
+      </div>
+
+      <!-- Horizon line -->
+      <div class="vr-horizon" id="vrHorizon"></div>
+
+      <!-- Logo wrap (centered) — composed of 5 layers revealed in sequence -->
+      <div class="pr-logo-wrap" id="prLogoWrap">
+        <div class="pr-logo-glow" id="prLogoGlow"></div>
+        <div class="pr-ring" id="prRing"></div>
+        <!-- Layered logo parts (each masked to a specific region of the badge) -->
+        <div class="lp lp-hermits" id="lpHermits"></div>
+        <div class="lp lp-shield"  id="lpShield"></div>
+        <div class="lp lp-cross"   id="lpCross"></div>
+        <div class="lp lp-outer"   id="lpOuter"></div>
+        <div class="lp lp-text"    id="lpText"></div>
+      </div>
+
+      <!-- Gold particles -->
+      <div class="pr-particles" id="prParticles"></div>
+
+      <!-- ENTENTE SPORTIVE text -->
+      <div class="pr-text" id="prText">ENTENTE SPORTIVE</div>
+
+      <!-- Black opener (fades from outro card) -->
+      <div class="pr-opener" id="prOpener"></div>
+    </div>
+
+    <!-- Final fade -->
+    <div class="final-fade" id="finalFade"></div>
+
+  </div>
+</div>
+
+<!-- Controls -->
+<div class="controls" id="controls">
+  <button id="playPause" aria-label="Play/Pause">▶</button>
+  <input type="range" id="seek" min="0" max="77" step="0.01" value="0">
+  <span class="tc" id="timecode">00:00 / 01:17</span>
+  <div class="phase-jump" id="phaseJump">
+    <button data-t="0">P1</button>
+    <button data-t="12">P2</button>
+    <button data-t="25">P3</button>
+    <button data-t="41">P4</button>
+    <button data-t="59.5">P5</button>
+    <button data-t="74">P6</button>
+  </div>
+  <button id="muteBtn" style="background:rgba(255,255,255,0.1);color:#fff;font-size:11px" aria-label="Mute/Unmute">🔇</button>
+  <button id="hideUI" style="background:rgba(255,255,255,0.1);color:#fff;font-size:11px" aria-label="Hide UI">▢</button>
+  <button id="downloadBtn" aria-label="Télécharger la vidéo en format mp4 4k" title="Télécharger la vidéo en format mp4 4k">⬇ MP4 4K</button>
+</div>
+
+<!-- Export overlay (shown before getDisplayMedia prompt) -->
+<div id="exportOverlay">
+  <h2>EXPORT MP4 4K</h2>
+  <p>Le navigateur va vous demander de partager votre écran ou onglet.<br>Sélectionnez <strong>cet onglet</strong> puis cliquez <strong>Partager</strong>.</p>
+  <div class="exp-step">
+    <b>1.</b> Sélectionnez <b>«&nbsp;Onglet Chrome&nbsp;»</b> dans la fenêtre système<br>
+    <b>2.</b> Choisissez <b>«&nbsp;Genech ES — Teaser&nbsp;»</b><br>
+    <b>3.</b> Cliquez <b>Partager</b> — la lecture démarre automatiquement<br>
+    <b>4.</b> Le fichier se télécharge à la fin (77 secondes)
+  </div>
+  <button class="exp-cancel" id="exportCancel">Annuler</button>
+</div>
+
+<!-- Export progress indicator -->
+<div id="exportProgress" style="display:none;flex;gap:10px">
+  <span class="ep-dot"></span>
+  <span id="exportProgressText">REC 0:00 / 1:17</span>
+</div>
+
+<div id="tweaks-host"></div>
+
+<!-- React + Babel for tweaks panel -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script src="timeline.js"></script>
+<script type="text/babel" src="tweaks.jsx"></script>
+<style id="outroStyles">
+.ol-word { display: inline-block; opacity: 0; transform: translateY(28px); filter: blur(8px); transition: opacity 0.6s ease, transform 0.7s cubic-bezier(.2,.7,.2,1), filter 0.6s ease; margin-right: 0.2em; }
+.ol-word.show { opacity: 1; transform: translateY(0); filter: blur(0); }
+.ol-dots { display: inline-block; opacity: 0; transition: opacity 0.6s ease; }
+.ol-dots.show { opacity: 1; }
+</style>
+
+<script>
+/* ── Télécharger la vidéo en format mp4 4k ──────────────────────────────── */
+(function () {
+  'use strict';
+
+  const TOTAL_DURATION_S = 77;          // animation length in seconds
+  const STOP_BUFFER_MS   = 800;         // extra ms after animation ends
+  const VIDEO_BITRATE    = 25_000_000;  // 25 Mbps — high-quality web export
+
+  const btn             = document.getElementById('downloadBtn');
+  const overlay         = document.getElementById('exportOverlay');
+  const cancelBtn       = document.getElementById('exportCancel');
+  const progressBox     = document.getElementById('exportProgress');
+  const progressText    = document.getElementById('exportProgressText');
+
+  let isRecording = false;
+  let recorderRef = null;
+  let streamRef   = null;
+  let timerRef    = null;
+  let tickRef     = null;
+
+  function fmt(s) {
+    const m = Math.floor(s / 60);
+    const ss = Math.floor(s % 60);
+    return m + ':' + String(ss).padStart(2, '0');
+  }
+
+  function resetUI() {
+    btn.textContent = '⬇ MP4 4K';
+    btn.disabled    = false;
+    btn.classList.remove('recording');
+    overlay.style.display    = 'none';
+    progressBox.style.display = 'none';
+    clearTimeout(timerRef);
+    clearInterval(tickRef);
+    isRecording = false;
+  }
+
+  function stopAll() {
+    if (recorderRef && recorderRef.state !== 'inactive') recorderRef.stop();
+    if (streamRef) streamRef.getTracks().forEach(t => t.stop());
+    recorderRef = null;
+    streamRef   = null;
+  }
+
+  cancelBtn.addEventListener('click', () => {
+    stopAll();
+    resetUI();
+  });
+
+  btn.addEventListener('click', async () => {
+    if (isRecording) return;
+
+    /* ── 1. Show instructions overlay ─────────────────────────────────── */
+    overlay.style.display = 'flex';
+
+    let stream;
+    try {
+      /* ── 2. Request tab/screen capture ──────────────────────────────── */
+      stream = await navigator.mediaDevices.getDisplayMedia({
+        video: {
+          frameRate:        { ideal: 24, max: 30 },
+          width:            { ideal: 3840 },   // request 4K if available
+          height:           { ideal: 2160 },
+          displaySurface:   'browser',
+        },
+        audio:              true,
+        selfBrowserSurface: 'include',
+        surfaceSwitching:   'exclude',
+        systemAudio:        'include',
+        preferCurrentTab:   true,              // Chrome 112+ hint
+      });
+    } catch (err) {
+      overlay.style.display = 'none';
+      if (err.name !== 'NotAllowedError') {
+        alert('Impossible d\'accéder à la capture écran :\n' + err.message);
+      }
+      return;
+    }
+
+    /* ── 3. Hide overlay — user has shared the tab ───────────────────── */
+    overlay.style.display = 'none';
+    streamRef = stream;
+
+    /* ── 4. Pick best supported codec ───────────────────────────────── */
+    const mimeType = [
+      'video/webm;codecs=vp9,opus',
+      'video/webm;codecs=vp9',
+      'video/webm;codecs=vp8,opus',
+      'video/webm',
+    ].find(t => MediaRecorder.isTypeSupported(t)) || 'video/webm';
+
+    const recorder = new MediaRecorder(stream, {
+      mimeType,
+      videoBitsPerSecond: VIDEO_BITRATE,
+    });
+    recorderRef = recorder;
+
+    const chunks = [];
+    recorder.ondataavailable = e => { if (e.data && e.data.size > 0) chunks.push(e.data); };
+
+    recorder.onstop = () => {
+      const blob = new Blob(chunks, { type: 'video/webm' });
+      const url  = URL.createObjectURL(blob);
+      const a    = Object.assign(document.createElement('a'), {
+        href:     url,
+        download: 'Genech-ES-Teaser-4K.mp4',
+      });
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 60_000);
+      resetUI();
+    };
+
+    /* ── 5. Rewind & play from t=0 ───────────────────────────────────── */
+    if (window.GENECH) {
+      window.GENECH.seekTo(0);
+      window.GENECH.play();
+    } else {
+      // fallback: drive video element directly
+      const vid = document.getElementById('video');
+      if (vid) { vid.currentTime = 0; vid.play().catch(() => {}); }
+    }
+
+    /* ── 6. Start recording ──────────────────────────────────────────── */
+    isRecording = true;
+    btn.textContent = '⏺ REC…';
+    btn.disabled    = true;
+    btn.classList.add('recording');
+    progressBox.style.display = 'flex';
+
+    recorder.start(250); // collect a chunk every 250 ms
+
+    const startMs = Date.now();
+    tickRef = setInterval(() => {
+      const elapsed = (Date.now() - startMs) / 1000;
+      progressText.textContent =
+        'REC ' + fmt(elapsed) + ' / ' + fmt(TOTAL_DURATION_S);
+    }, 500);
+
+    /* ── 7. Auto-stop after full duration ────────────────────────────── */
+    timerRef = setTimeout(() => {
+      clearInterval(tickRef);
+      stopAll();
+    }, (TOTAL_DURATION_S * 1000) + STOP_BUFFER_MS);
+
+    /* ── 8. Handle user stopping screen share early ──────────────────── */
+    stream.getVideoTracks()[0].addEventListener('ended', () => {
+      clearTimeout(timerRef);
+      clearInterval(tickRef);
+      if (recorderRef && recorderRef.state !== 'inactive') recorderRef.stop();
+      streamRef = null;
+    });
+  });
+})();
+</script>
+</body>
+</html>
