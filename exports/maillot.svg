@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1100" width="800" height="1100">
-  <title>Maillot ES Genech - Pévèle Istanbul Doner Kebab</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1100" width="1600" height="1100">
+  <title>Maillot ES Genech - Front & Back (Pévèle Istanbul Doner Kebab / SA Barbieux #11)</title>
 
   <defs>
-    <!-- Colours -->
-    <!-- bg navy, jersey navy, accent white, pinstripe -->
-
-    <!-- Jersey silhouette path used for clipping pinstripes -->
-    <clipPath id="bodyClip">
+    <!-- Front body clip -->
+    <clipPath id="bodyClipFront">
       <path d="M 310 175
                C 285 175 265 195 240 230
                L 95 380
@@ -26,16 +23,35 @@
                C 360 245 320 215 310 175 Z"/>
     </clipPath>
 
-    <!-- Arc paths for sponsor circle text -->
-    <path id="sponsorTopArc" d="M 260 590 a 140 140 0 0 1 280 0" fill="none"/>
-    <path id="sponsorBottomArc" d="M 270 600 a 130 130 0 0 0 260 0" fill="none"/>
+    <!-- Back body clip (shifted by +800 on x) -->
+    <clipPath id="bodyClipBack">
+      <path d="M 1110 175
+               C 1085 175 1065 195 1040 230
+               L 895 380
+               L 855 510
+               Q 900 555 985 550
+               L 1045 480
+               L 1020 1045
+               L 1380 1045
+               L 1355 480
+               L 1415 550
+               Q 1500 555 1545 510
+               L 1505 380
+               L 1360 230
+               C 1335 195 1315 175 1290 175
+               C 1280 230 1240 248 1200 248
+               C 1160 248 1120 230 1110 175 Z"/>
+    </clipPath>
 
-    <!-- Arc paths for club crest text -->
+    <!-- Crest arcs -->
     <path id="crestTopArc" d="M 560 415 a 60 60 0 0 1 120 0" fill="none"/>
     <path id="crestBottomArc" d="M 565 425 a 55 55 0 0 0 110 0" fill="none"/>
 
-    <!-- Subtle fabric shading -->
-    <radialGradient id="bgGrad" cx="50%" cy="55%" r="75%">
+    <!-- Sponsor (front) arcs -->
+    <path id="dkTop" d="M 262 730 a 138 138 0 0 1 276 0" fill="none"/>
+    <path id="dkBot" d="M 270 730 a 130 130 0 0 0 260 0" fill="none"/>
+
+    <radialGradient id="bgGrad" cx="50%" cy="55%" r="80%">
       <stop offset="0%"  stop-color="#0e1b3a"/>
       <stop offset="100%" stop-color="#050a1c"/>
     </radialGradient>
@@ -47,12 +63,14 @@
   </defs>
 
   <!-- Background -->
-  <rect x="0" y="0" width="800" height="1100" fill="url(#bgGrad)"/>
+  <rect x="0" y="0" width="1600" height="1100" fill="url(#bgGrad)"/>
 
-  <!-- Drop shadow under jersey -->
+  <!-- ====================================================================
+       FRONT VIEW (x: 0 .. 800)
+       ==================================================================== -->
+
   <ellipse cx="400" cy="1070" rx="260" ry="18" fill="#000" opacity="0.45"/>
 
-  <!-- Jersey body fill -->
   <path d="M 310 175
            C 285 175 265 195 240 230
            L 95 380
@@ -71,8 +89,7 @@
            C 360 245 320 215 310 175 Z"
         fill="url(#bodyGrad)"/>
 
-  <!-- Pinstripes (clipped to body) -->
-  <g clip-path="url(#bodyClip)" stroke="#ffffff" stroke-width="1.2" opacity="0.18">
+  <g clip-path="url(#bodyClipFront)" stroke="#ffffff" stroke-width="1.2" opacity="0.18">
     <line x1="250" y1="0" x2="250" y2="1100"/>
     <line x1="305" y1="0" x2="305" y2="1100"/>
     <line x1="350" y1="0" x2="350" y2="1100"/>
@@ -81,57 +98,38 @@
     <line x1="495" y1="0" x2="495" y2="1100"/>
     <line x1="550" y1="0" x2="550" y2="1100"/>
   </g>
-  <!-- A few stronger central stripes -->
-  <g clip-path="url(#bodyClip)" stroke="#ffffff" stroke-width="1.4" opacity="0.28">
+  <g clip-path="url(#bodyClipFront)" stroke="#ffffff" stroke-width="1.4" opacity="0.28">
     <line x1="370" y1="0" x2="370" y2="1100"/>
     <line x1="430" y1="0" x2="430" y2="1100"/>
   </g>
 
-  <!-- Subtle body shading (sides darker) -->
-  <g clip-path="url(#bodyClip)">
+  <g clip-path="url(#bodyClipFront)">
     <rect x="220" y="240" width="60" height="820" fill="#000" opacity="0.18"/>
     <rect x="520" y="240" width="60" height="820" fill="#000" opacity="0.18"/>
-    <!-- centre highlight -->
     <rect x="340" y="240" width="120" height="820" fill="#ffffff" opacity="0.04"/>
   </g>
 
-  <!-- Collar: white outer band, navy inner -->
-  <path d="M 305 178
-           C 320 220 360 248 400 248
-           C 440 248 480 220 495 178
-           C 475 168 455 162 400 162
-           C 345 162 325 168 305 178 Z"
-        fill="#ffffff"/>
-  <path d="M 320 178
-           C 333 212 365 235 400 235
-           C 435 235 467 212 480 178
-           C 463 170 445 166 400 166
-           C 355 166 337 170 320 178 Z"
-        fill="#101e42"/>
+  <!-- Collar -->
+  <path d="M 305 178 C 320 220 360 248 400 248 C 440 248 480 220 495 178
+           C 475 168 455 162 400 162 C 345 162 325 168 305 178 Z" fill="#ffffff"/>
+  <path d="M 320 178 C 333 212 365 235 400 235 C 435 235 467 212 480 178
+           C 463 170 445 166 400 166 C 355 166 337 170 320 178 Z" fill="#101e42"/>
 
-  <!-- Shoulder yoke seams (lighter line) -->
   <path d="M 240 232 L 305 178" stroke="#ffffff" stroke-width="1" opacity="0.35" fill="none"/>
   <path d="M 560 232 L 495 178" stroke="#ffffff" stroke-width="1" opacity="0.35" fill="none"/>
 
-  <!-- Shoulder buttons (4 per side) -->
   <g fill="#ffffff">
-    <circle cx="262" cy="223" r="7"/>
-    <circle cx="280" cy="210" r="7"/>
-    <circle cx="298" cy="197" r="7"/>
-    <circle cx="316" cy="184" r="7"/>
-    <circle cx="538" cy="223" r="7"/>
-    <circle cx="520" cy="210" r="7"/>
-    <circle cx="502" cy="197" r="7"/>
-    <circle cx="484" cy="184" r="7"/>
+    <circle cx="262" cy="223" r="7"/><circle cx="280" cy="210" r="7"/>
+    <circle cx="298" cy="197" r="7"/><circle cx="316" cy="184" r="7"/>
+    <circle cx="538" cy="223" r="7"/><circle cx="520" cy="210" r="7"/>
+    <circle cx="502" cy="197" r="7"/><circle cx="484" cy="184" r="7"/>
   </g>
 
-  <!-- JAKO triangle marks on shoulder seams -->
   <g fill="#0e1b3a">
     <polygon points="320,182 332,178 320,174"/>
     <polygon points="480,182 468,178 480,174"/>
   </g>
 
-  <!-- Cuffs: white band at sleeve ends -->
   <path d="M 60 502 Q 100 548 184 543 L 200 510 Q 120 520 80 480 Z" fill="#ffffff"/>
   <path d="M 740 502 Q 700 548 616 543 L 600 510 Q 680 520 720 480 Z" fill="#ffffff"/>
 
@@ -139,86 +137,158 @@
   <g transform="translate(298 415)">
     <polygon points="0,12 14,4 14,20" fill="#ffffff"/>
     <text x="22" y="22" font-family="Arial Black, Arial, sans-serif"
-          font-weight="900" font-size="34" fill="#ffffff"
-          letter-spacing="1">JAKO</text>
+          font-weight="900" font-size="34" fill="#ffffff" letter-spacing="1">JAKO</text>
   </g>
 
-  <!-- ====================== CLUB CREST (right chest) ====================== -->
-  <g transform="translate(0 0)">
-    <!-- outer ring -->
+  <!-- Club crest right chest -->
+  <g>
     <circle cx="620" cy="430" r="55" fill="#101e42" stroke="#ffffff" stroke-width="3"/>
     <circle cx="620" cy="430" r="50" fill="none" stroke="#ffffff" stroke-width="1"/>
-
-    <!-- Arc text -->
     <text font-family="Georgia, serif" font-size="10" font-weight="bold" fill="#ffffff" letter-spacing="2">
       <textPath href="#crestTopArc" startOffset="50%" text-anchor="middle">GENECH</textPath>
     </text>
     <text font-family="Georgia, serif" font-size="8" font-weight="bold" fill="#ffffff" letter-spacing="1.5">
       <textPath href="#crestBottomArc" startOffset="50%" text-anchor="middle">ENTENTE SPORTIVE</textPath>
     </text>
-
-    <!-- 19 / 71 -->
     <text x="582" y="423" font-family="Georgia, serif" font-size="9" font-weight="bold" fill="#ffffff">19</text>
     <text x="648" y="423" font-family="Georgia, serif" font-size="9" font-weight="bold" fill="#ffffff">71</text>
-
-    <!-- quartered shield (2x2 grid) -->
     <g transform="translate(595 405)">
       <rect x="0"  y="0"  width="25" height="25" fill="#ffffff"/>
       <rect x="25" y="0"  width="25" height="25" fill="#101e42"/>
       <rect x="0"  y="25" width="25" height="25" fill="#101e42"/>
       <rect x="25" y="25" width="25" height="25" fill="#ffffff"/>
-      <!-- thin frame -->
       <rect x="0" y="0" width="50" height="50" fill="none" stroke="#ffffff" stroke-width="1"/>
-      <!-- GEG monogram across centre -->
       <text x="25" y="32" font-family="Georgia, serif" font-size="11" font-weight="bold"
             text-anchor="middle" fill="#ffffff" stroke="#101e42" stroke-width="0.3">GEG</text>
     </g>
   </g>
 
-  <!-- ====================== SPONSOR PATCH (centre chest) ====================== -->
-  <g transform="translate(0 0)">
-    <!-- outer white ring (donut) -->
+  <!-- Sponsor patch -->
+  <g>
     <circle cx="400" cy="730" r="155" fill="#ffffff"/>
     <circle cx="400" cy="730" r="118" fill="#101e42"/>
     <circle cx="400" cy="730" r="113" fill="#ffffff"/>
-
-    <!-- thin navy inner & outer border -->
     <circle cx="400" cy="730" r="155" fill="none" stroke="#101e42" stroke-width="2"/>
     <circle cx="400" cy="730" r="124" fill="none" stroke="#101e42" stroke-width="1.5"/>
-
-    <!-- Top arc: DONER KEBAB -->
-    <defs>
-      <path id="dkTop" d="M 262 730 a 138 138 0 0 1 276 0" fill="none"/>
-      <path id="dkBot" d="M 270 730 a 130 130 0 0 0 260 0" fill="none"/>
-    </defs>
-    <text font-family="Georgia, 'Times New Roman', serif" font-size="22"
-          font-weight="bold" fill="#101e42" letter-spacing="4">
+    <text font-family="Georgia, 'Times New Roman', serif" font-size="22" font-weight="bold" fill="#101e42" letter-spacing="4">
       <textPath href="#dkTop" startOffset="50%" text-anchor="middle">DONER KEBAB</textPath>
     </text>
-    <text font-family="Georgia, 'Times New Roman', serif" font-size="22"
-          font-weight="bold" fill="#101e42" letter-spacing="4">
+    <text font-family="Georgia, 'Times New Roman', serif" font-size="22" font-weight="bold" fill="#101e42" letter-spacing="4">
       <textPath href="#dkBot" startOffset="50%" text-anchor="middle">DONER KEBAB</textPath>
     </text>
-
-    <!-- Inner script: Pévèle Istanbul -->
     <text x="400" y="725" text-anchor="middle"
           font-family="'Brush Script MT','Lucida Handwriting','Apple Chancery',cursive"
-          font-size="46" font-weight="bold" fill="#101e42"
-          stroke="#101e42" stroke-width="0.4">Pévèle</text>
+          font-size="46" font-weight="bold" fill="#101e42" stroke="#101e42" stroke-width="0.4">Pévèle</text>
     <text x="400" y="775" text-anchor="middle"
           font-family="'Brush Script MT','Lucida Handwriting','Apple Chancery',cursive"
-          font-size="46" font-weight="bold" fill="#101e42"
-          stroke="#101e42" stroke-width="0.4">Istanbul</text>
+          font-size="46" font-weight="bold" fill="#101e42" stroke="#101e42" stroke-width="0.4">Istanbul</text>
   </g>
 
-  <!-- subtle fabric highlights on body curves -->
-  <g clip-path="url(#bodyClip)" opacity="0.08">
+  <g clip-path="url(#bodyClipFront)" opacity="0.08">
     <ellipse cx="270" cy="600" rx="40" ry="380" fill="#ffffff"/>
     <ellipse cx="530" cy="600" rx="40" ry="380" fill="#ffffff"/>
   </g>
-
-  <!-- darker shadow at hem -->
-  <g clip-path="url(#bodyClip)">
+  <g clip-path="url(#bodyClipFront)">
     <rect x="0" y="980" width="800" height="80" fill="#000" opacity="0.18"/>
   </g>
+
+  <!-- ====================================================================
+       BACK VIEW (x: 800 .. 1600)
+       ==================================================================== -->
+
+  <ellipse cx="1200" cy="1070" rx="260" ry="18" fill="#000" opacity="0.45"/>
+
+  <path d="M 1110 175
+           C 1085 175 1065 195 1040 230
+           L 895 380
+           L 855 510
+           Q 900 555 985 550
+           L 1045 480
+           L 1020 1045
+           L 1380 1045
+           L 1355 480
+           L 1415 550
+           Q 1500 555 1545 510
+           L 1505 380
+           L 1360 230
+           C 1335 195 1315 175 1290 175
+           C 1280 230 1240 248 1200 248
+           C 1160 248 1120 230 1110 175 Z"
+        fill="url(#bodyGrad)"/>
+
+  <!-- Back: subtle vertical seam down center, no pinstripes visible at this angle but keep light ones -->
+  <g clip-path="url(#bodyClipBack)" stroke="#ffffff" stroke-width="1" opacity="0.10">
+    <line x1="1100" y1="0" x2="1100" y2="1100"/>
+    <line x1="1150" y1="0" x2="1150" y2="1100"/>
+    <line x1="1200" y1="0" x2="1200" y2="1100"/>
+    <line x1="1250" y1="0" x2="1250" y2="1100"/>
+    <line x1="1300" y1="0" x2="1300" y2="1100"/>
+  </g>
+
+  <g clip-path="url(#bodyClipBack)">
+    <rect x="1020" y="240" width="60" height="820" fill="#000" opacity="0.18"/>
+    <rect x="1320" y="240" width="60" height="820" fill="#000" opacity="0.18"/>
+    <rect x="1140" y="240" width="120" height="820" fill="#ffffff" opacity="0.04"/>
+  </g>
+
+  <!-- Back collar (filled navy - rear neckline) -->
+  <path d="M 1110 178 C 1130 230 1170 250 1200 250 C 1230 250 1270 230 1290 178
+           C 1270 168 1250 162 1200 162 C 1150 162 1130 168 1110 178 Z" fill="#ffffff"/>
+  <path d="M 1120 180 C 1140 222 1175 240 1200 240 C 1225 240 1260 222 1280 180
+           C 1262 172 1245 168 1200 168 C 1155 168 1138 172 1120 180 Z" fill="#101e42"/>
+
+  <!-- Back cuffs -->
+  <path d="M 860 502 Q 900 548 984 543 L 1000 510 Q 920 520 880 480 Z" fill="#ffffff"/>
+  <path d="M 1540 502 Q 1500 548 1416 543 L 1400 510 Q 1480 520 1520 480 Z" fill="#ffffff"/>
+
+  <!-- "ESG belle petite équipe" small text above number -->
+  <text x="1200" y="345" text-anchor="middle"
+        font-family="Arial, sans-serif" font-size="18" font-weight="600" fill="#ffffff"
+        letter-spacing="1">ESG belle petite équipe</text>
+
+  <!-- Big number 11 -->
+  <g transform="translate(1200 620)">
+    <text text-anchor="middle" dominant-baseline="middle"
+          font-family="Impact, 'Arial Black', sans-serif" font-weight="900"
+          font-size="280" letter-spacing="-8"
+          fill="#ffffff" stroke="#101e42" stroke-width="8"
+          paint-order="stroke fill">11</text>
+  </g>
+
+  <!-- Two small JAKO triangle marks below number (as on real jersey) -->
+  <g fill="#ffffff">
+    <circle cx="1160" cy="785" r="14" fill="#ffffff"/>
+    <circle cx="1240" cy="785" r="14" fill="#ffffff"/>
+    <polygon points="1153,781 1166,778 1153,789" fill="#101e42"/>
+    <polygon points="1233,781 1246,778 1233,789" fill="#101e42"/>
+  </g>
+
+  <!-- SA Barbieux sponsor at bottom -->
+  <g transform="translate(1200 920)">
+    <!-- house icon (stylized A with house roof) -->
+    <g transform="translate(-130 -32)" fill="#ffffff" stroke="#ffffff" stroke-width="1">
+      <!-- roof triangle -->
+      <polygon points="30,2 58,30 52,30 30,12 8,30 2,30" fill="#ffffff"/>
+      <!-- house body -->
+      <rect x="10" y="28" width="40" height="32" fill="none" stroke="#ffffff" stroke-width="3"/>
+      <!-- door -->
+      <rect x="26" y="42" width="8" height="18" fill="#ffffff"/>
+      <!-- small chimney/dot -->
+      <circle cx="14" cy="48" r="2.5" fill="#ffffff"/>
+    </g>
+    <text x="-60" y="0" font-family="Arial, sans-serif" font-weight="700"
+          font-size="46" fill="#ffffff">SA Barbieux</text>
+  </g>
+
+  <g clip-path="url(#bodyClipBack)" opacity="0.08">
+    <ellipse cx="1070" cy="600" rx="40" ry="380" fill="#ffffff"/>
+    <ellipse cx="1330" cy="600" rx="40" ry="380" fill="#ffffff"/>
+  </g>
+  <g clip-path="url(#bodyClipBack)">
+    <rect x="800" y="980" width="800" height="80" fill="#000" opacity="0.18"/>
+  </g>
+
+  <!-- Labels under each view -->
+  <text x="400" y="1090" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" fill="#ffffff" opacity="0.55">FRONT</text>
+  <text x="1200" y="1090" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" fill="#ffffff" opacity="0.55">BACK</text>
 </svg>
