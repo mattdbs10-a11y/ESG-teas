@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1100" width="800" height="1100">
+  <title>Maillot ES Genech - Pévèle Istanbul Doner Kebab</title>
+
+  <defs>
+    <!-- Colours -->
+    <!-- bg navy, jersey navy, accent white, pinstripe -->
+
+    <!-- Jersey silhouette path used for clipping pinstripes -->
+    <clipPath id="bodyClip">
+      <path d="M 310 175
+               C 285 175 265 195 240 230
+               L 95 380
+               L 55 510
+               Q 100 555 185 550
+               L 245 480
+               L 220 1045
+               L 580 1045
+               L 555 480
+               L 615 550
+               Q 700 555 745 510
+               L 705 380
+               L 560 230
+               C 535 195 515 175 490 175
+               C 480 215 440 245 400 245
+               C 360 245 320 215 310 175 Z"/>
+    </clipPath>
+
+    <!-- Arc paths for sponsor circle text -->
+    <path id="sponsorTopArc" d="M 260 590 a 140 140 0 0 1 280 0" fill="none"/>
+    <path id="sponsorBottomArc" d="M 270 600 a 130 130 0 0 0 260 0" fill="none"/>
+
+    <!-- Arc paths for club crest text -->
+    <path id="crestTopArc" d="M 560 415 a 60 60 0 0 1 120 0" fill="none"/>
+    <path id="crestBottomArc" d="M 565 425 a 55 55 0 0 0 110 0" fill="none"/>
+
+    <!-- Subtle fabric shading -->
+    <radialGradient id="bgGrad" cx="50%" cy="55%" r="75%">
+      <stop offset="0%"  stop-color="#0e1b3a"/>
+      <stop offset="100%" stop-color="#050a1c"/>
+    </radialGradient>
+
+    <radialGradient id="bodyGrad" cx="50%" cy="50%" r="65%">
+      <stop offset="0%"  stop-color="#1a2a52"/>
+      <stop offset="100%" stop-color="#101e42"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="800" height="1100" fill="url(#bgGrad)"/>
+
+  <!-- Drop shadow under jersey -->
+  <ellipse cx="400" cy="1070" rx="260" ry="18" fill="#000" opacity="0.45"/>
+
+  <!-- Jersey body fill -->
+  <path d="M 310 175
+           C 285 175 265 195 240 230
+           L 95 380
+           L 55 510
+           Q 100 555 185 550
+           L 245 480
+           L 220 1045
+           L 580 1045
+           L 555 480
+           L 615 550
+           Q 700 555 745 510
+           L 705 380
+           L 560 230
+           C 535 195 515 175 490 175
+           C 480 215 440 245 400 245
+           C 360 245 320 215 310 175 Z"
+        fill="url(#bodyGrad)"/>
+
+  <!-- Pinstripes (clipped to body) -->
+  <g clip-path="url(#bodyClip)" stroke="#ffffff" stroke-width="1.2" opacity="0.18">
+    <line x1="250" y1="0" x2="250" y2="1100"/>
+    <line x1="305" y1="0" x2="305" y2="1100"/>
+    <line x1="350" y1="0" x2="350" y2="1100"/>
+    <line x1="400" y1="0" x2="400" y2="1100"/>
+    <line x1="450" y1="0" x2="450" y2="1100"/>
+    <line x1="495" y1="0" x2="495" y2="1100"/>
+    <line x1="550" y1="0" x2="550" y2="1100"/>
+  </g>
+  <!-- A few stronger central stripes -->
+  <g clip-path="url(#bodyClip)" stroke="#ffffff" stroke-width="1.4" opacity="0.28">
+    <line x1="370" y1="0" x2="370" y2="1100"/>
+    <line x1="430" y1="0" x2="430" y2="1100"/>
+  </g>
+
+  <!-- Subtle body shading (sides darker) -->
+  <g clip-path="url(#bodyClip)">
+    <rect x="220" y="240" width="60" height="820" fill="#000" opacity="0.18"/>
+    <rect x="520" y="240" width="60" height="820" fill="#000" opacity="0.18"/>
+    <!-- centre highlight -->
+    <rect x="340" y="240" width="120" height="820" fill="#ffffff" opacity="0.04"/>
+  </g>
+
+  <!-- Collar: white outer band, navy inner -->
+  <path d="M 305 178
+           C 320 220 360 248 400 248
+           C 440 248 480 220 495 178
+           C 475 168 455 162 400 162
+           C 345 162 325 168 305 178 Z"
+        fill="#ffffff"/>
+  <path d="M 320 178
+           C 333 212 365 235 400 235
+           C 435 235 467 212 480 178
+           C 463 170 445 166 400 166
+           C 355 166 337 170 320 178 Z"
+        fill="#101e42"/>
+
+  <!-- Shoulder yoke seams (lighter line) -->
+  <path d="M 240 232 L 305 178" stroke="#ffffff" stroke-width="1" opacity="0.35" fill="none"/>
+  <path d="M 560 232 L 495 178" stroke="#ffffff" stroke-width="1" opacity="0.35" fill="none"/>
+
+  <!-- Shoulder buttons (4 per side) -->
+  <g fill="#ffffff">
+    <circle cx="262" cy="223" r="7"/>
+    <circle cx="280" cy="210" r="7"/>
+    <circle cx="298" cy="197" r="7"/>
+    <circle cx="316" cy="184" r="7"/>
+    <circle cx="538" cy="223" r="7"/>
+    <circle cx="520" cy="210" r="7"/>
+    <circle cx="502" cy="197" r="7"/>
+    <circle cx="484" cy="184" r="7"/>
+  </g>
+
+  <!-- JAKO triangle marks on shoulder seams -->
+  <g fill="#0e1b3a">
+    <polygon points="320,182 332,178 320,174"/>
+    <polygon points="480,182 468,178 480,174"/>
+  </g>
+
+  <!-- Cuffs: white band at sleeve ends -->
+  <path d="M 60 502 Q 100 548 184 543 L 200 510 Q 120 520 80 480 Z" fill="#ffffff"/>
+  <path d="M 740 502 Q 700 548 616 543 L 600 510 Q 680 520 720 480 Z" fill="#ffffff"/>
+
+  <!-- JAKO wordmark left chest -->
+  <g transform="translate(298 415)">
+    <polygon points="0,12 14,4 14,20" fill="#ffffff"/>
+    <text x="22" y="22" font-family="Arial Black, Arial, sans-serif"
+          font-weight="900" font-size="34" fill="#ffffff"
+          letter-spacing="1">JAKO</text>
+  </g>
+
+  <!-- ====================== CLUB CREST (right chest) ====================== -->
+  <g transform="translate(0 0)">
+    <!-- outer ring -->
+    <circle cx="620" cy="430" r="55" fill="#101e42" stroke="#ffffff" stroke-width="3"/>
+    <circle cx="620" cy="430" r="50" fill="none" stroke="#ffffff" stroke-width="1"/>
+
+    <!-- Arc text -->
+    <text font-family="Georgia, serif" font-size="10" font-weight="bold" fill="#ffffff" letter-spacing="2">
+      <textPath href="#crestTopArc" startOffset="50%" text-anchor="middle">GENECH</textPath>
+    </text>
+    <text font-family="Georgia, serif" font-size="8" font-weight="bold" fill="#ffffff" letter-spacing="1.5">
+      <textPath href="#crestBottomArc" startOffset="50%" text-anchor="middle">ENTENTE SPORTIVE</textPath>
+    </text>
+
+    <!-- 19 / 71 -->
+    <text x="582" y="423" font-family="Georgia, serif" font-size="9" font-weight="bold" fill="#ffffff">19</text>
+    <text x="648" y="423" font-family="Georgia, serif" font-size="9" font-weight="bold" fill="#ffffff">71</text>
+
+    <!-- quartered shield (2x2 grid) -->
+    <g transform="translate(595 405)">
+      <rect x="0"  y="0"  width="25" height="25" fill="#ffffff"/>
+      <rect x="25" y="0"  width="25" height="25" fill="#101e42"/>
+      <rect x="0"  y="25" width="25" height="25" fill="#101e42"/>
+      <rect x="25" y="25" width="25" height="25" fill="#ffffff"/>
+      <!-- thin frame -->
+      <rect x="0" y="0" width="50" height="50" fill="none" stroke="#ffffff" stroke-width="1"/>
+      <!-- GEG monogram across centre -->
+      <text x="25" y="32" font-family="Georgia, serif" font-size="11" font-weight="bold"
+            text-anchor="middle" fill="#ffffff" stroke="#101e42" stroke-width="0.3">GEG</text>
+    </g>
+  </g>
+
+  <!-- ====================== SPONSOR PATCH (centre chest) ====================== -->
+  <g transform="translate(0 0)">
+    <!-- outer white ring (donut) -->
+    <circle cx="400" cy="730" r="155" fill="#ffffff"/>
+    <circle cx="400" cy="730" r="118" fill="#101e42"/>
+    <circle cx="400" cy="730" r="113" fill="#ffffff"/>
+
+    <!-- thin navy inner & outer border -->
+    <circle cx="400" cy="730" r="155" fill="none" stroke="#101e42" stroke-width="2"/>
+    <circle cx="400" cy="730" r="124" fill="none" stroke="#101e42" stroke-width="1.5"/>
+
+    <!-- Top arc: DONER KEBAB -->
+    <defs>
+      <path id="dkTop" d="M 262 730 a 138 138 0 0 1 276 0" fill="none"/>
+      <path id="dkBot" d="M 270 730 a 130 130 0 0 0 260 0" fill="none"/>
+    </defs>
+    <text font-family="Georgia, 'Times New Roman', serif" font-size="22"
+          font-weight="bold" fill="#101e42" letter-spacing="4">
+      <textPath href="#dkTop" startOffset="50%" text-anchor="middle">DONER KEBAB</textPath>
+    </text>
+    <text font-family="Georgia, 'Times New Roman', serif" font-size="22"
+          font-weight="bold" fill="#101e42" letter-spacing="4">
+      <textPath href="#dkBot" startOffset="50%" text-anchor="middle">DONER KEBAB</textPath>
+    </text>
+
+    <!-- Inner script: Pévèle Istanbul -->
+    <text x="400" y="725" text-anchor="middle"
+          font-family="'Brush Script MT','Lucida Handwriting','Apple Chancery',cursive"
+          font-size="46" font-weight="bold" fill="#101e42"
+          stroke="#101e42" stroke-width="0.4">Pévèle</text>
+    <text x="400" y="775" text-anchor="middle"
+          font-family="'Brush Script MT','Lucida Handwriting','Apple Chancery',cursive"
+          font-size="46" font-weight="bold" fill="#101e42"
+          stroke="#101e42" stroke-width="0.4">Istanbul</text>
+  </g>
+
+  <!-- subtle fabric highlights on body curves -->
+  <g clip-path="url(#bodyClip)" opacity="0.08">
+    <ellipse cx="270" cy="600" rx="40" ry="380" fill="#ffffff"/>
+    <ellipse cx="530" cy="600" rx="40" ry="380" fill="#ffffff"/>
+  </g>
+
+  <!-- darker shadow at hem -->
+  <g clip-path="url(#bodyClip)">
+    <rect x="0" y="980" width="800" height="80" fill="#000" opacity="0.18"/>
+  </g>
+</svg>
